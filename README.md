@@ -7,7 +7,9 @@
 
 注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
 
-模型中的技巧见 https://github.com/BlinkDL/minGPT-tuned 。同时使用了特殊采样方法，改善小模型的生成质量。
+模型中的技巧见 https://github.com/BlinkDL/minGPT-tuned 。
+
+同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
 
 交流 QQ 群 143626394 （加入时请简单自我介绍）。我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
 
