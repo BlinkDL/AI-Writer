@@ -2,7 +2,7 @@
 用魔改 GPT 生成网文。Tuned GPT for novel generation.
 
 使用方法：
-1. 下载模型 https://drive.google.com/file/d/1qtyAtUfq9rtWcGUV-h9_6sz4kWTUg5EF （400M），解压 pth 到 model 目录
+1. 下载模型 https://drive.google.com/file/d/1qtyAtUfq9rtWcGUV-h9_6sz4kWTUg5EF （400M），解压 pth 到 model 目录（如果下载不了请加 QQ 群 143626394）。
 2. 运行 python run.py
 
 注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
