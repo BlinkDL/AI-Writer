@@ -7,11 +7,13 @@ from torch.nn import functional as F
 import src.utils
 from src.model_v101 import GPT, GPTConfig
 
-src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
+# src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
 
 print('\nAI-writer demo https://github.com/BlinkDL/AI-Writer')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 print('\nLoading model...', end=' ')
+
+RUN_DEVICE = 'cpu' # gpu 或 cpu
 
 MODEL_NAME = 'model/ww-101-L12-H12-C768-T256-20210723'
 WORD_NAME = 'model/ww-20210723'
@@ -26,12 +28,12 @@ LENGTH_OF_EACH = 400
 # context = "\n他"
 # context = "\n她"
 # context = "\n魔法"
-context = "\n魔皇"
+# context = "\n魔皇"
 # context = "\n总裁"
 # context = "\n都城"
 # context = "\n龙傲天"
 # context = "\n星际旅行"
-# context = "\n三体舰队"
+context = "\n三体舰队"
 # context = "\n乾坤混元一气鼎！这是"
 
 ##############################################################################
@@ -51,8 +53,9 @@ nHead = 12
 nEmb = 768
 block_size = 256
 
-model = GPT(GPTConfig(vocab_size, block_size,
-                        n_layer=nLayers, n_head=nHead, n_embd=nEmb)).cuda()
+model = GPT(GPTConfig(vocab_size, block_size, n_layer=nLayers, n_head=nHead, n_embd=nEmb))
+if RUN_DEVICE == 'gpu':
+    model = model.cuda()
 model.load_state_dict(torch.load(MODEL_NAME + '.pth'))
 
 print('done:', MODEL_NAME, '&', WORD_NAME)
@@ -76,7 +79,9 @@ for run in range(NUM_OF_RUNS):
             print_begin = real_len
 
         with torch.no_grad():
-            xxx = torch.tensor(x[-block_size:], dtype=torch.long)[None,...].to("cuda:0")
+            xxx = torch.tensor(x[-block_size:], dtype=torch.long)[None,...]
+            if RUN_DEVICE == 'gpu':
+                xxx = xxx.cuda()
             out, _ = model(xxx)
         pos = -1 if real_len >= block_size else real_len - 1
 
@@ -93,7 +98,7 @@ for run in range(NUM_OF_RUNS):
             x = np.append(x, char)
         real_len += 1
 
-        if i % 10 == 9 or i == LENGTH_OF_EACH-1 or i < 10:
+        if i % 10 == 9 or i == LENGTH_OF_EACH-1 or i < 10 or RUN_DEVICE != 'gpu':
             completion = ''.join([train_dataset.itos[int(i)] for i in x[print_begin:real_len]])
             print(completion.replace('\n', '\n  '), end = '')
             print_begin = real_len
