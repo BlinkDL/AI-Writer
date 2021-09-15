@@ -13,7 +13,7 @@ print('\nAI-writer demo https://github.com/BlinkDL/AI-Writer')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 print('\nLoading model...', end=' ')
 
-RUN_DEVICE = 'cpu' # gpu 或 cpu
+RUN_DEVICE = 'gpu' # gpu 或 cpu
 
 MODEL_NAME = 'model/ww-101-L12-H12-C768-T256-20210723'
 WORD_NAME = 'model/ww-20210723'
