@@ -56,7 +56,9 @@ block_size = 256
 model = GPT(GPTConfig(vocab_size, block_size, n_layer=nLayers, n_head=nHead, n_embd=nEmb))
 if RUN_DEVICE == 'gpu':
     model = model.cuda()
-model.load_state_dict(torch.load(MODEL_NAME + '.pth'))
+    model.load_state_dict(torch.load(MODEL_NAME + '.pth'))
+else:
+    model.load_state_dict(torch.load(MODEL_NAME + '.pth', map_location='cpu'))
 
 print('done:', MODEL_NAME, '&', WORD_NAME)
 
