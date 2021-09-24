@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+########################################################################################################
+# AI人工智障写作 - https://github.com/BlinkDL/AI-Writer
+########################################################################################################
+
 import numpy as np
 import math, json
 import torch
@@ -10,7 +14,8 @@ from src.model_v101 import GPT, GPTConfig
 
 # src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
 
-print('\nAI-writer demo https://github.com/BlinkDL/AI-Writer')
+print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
+print('欢迎关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
 RUN_DEVICE = 'gpu' # gpu 或 cpu
@@ -19,7 +24,7 @@ MODEL_NAME = 'model/ww-101-L12-H12-C768-T256-20210723'
 WORD_NAME = 'model/ww-20210723'
 
 NUM_OF_RUNS = 9999
-LENGTH_OF_EACH = 400
+LENGTH_OF_EACH = 300
 
 min_p_ratio = 0.1 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
 
