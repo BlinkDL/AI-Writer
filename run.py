@@ -23,22 +23,45 @@ LENGTH_OF_EACH = 400
 
 min_p_ratio = 0.1 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
 
-# 这是你的开头，建议开头用 \n 表示这是新段落
-# 注意，不应出现 \r，不应出现重复空行（\n\n），段落开头和结尾不应有空格，因为清洗数据时去除了这些情况
+# 开头这样输入：
+# context = "我"
+# context = "他"
+# context = "她"
+# context = "魔法"
+# context = "魔皇"
+# context = "总裁"
+# context = "都城"
+# context = "龙傲天"
+# context = "星际旅行"
+# context = "三体舰队"
+# context = "乾坤混元一气鼎！这是"
 
-# context = "\n我"
-# context = "\n他"
-# context = "\n她"
-# context = "\n魔法"
-# context = "\n魔皇"
-# context = "\n总裁"
-# context = "\n都城"
-# context = "\n龙傲天"
-# context = "\n星际旅行"
-context = "\n三体舰队"
-# context = "\n乾坤混元一气鼎！这是"
+# 多行的开头这样输入：
+context = """
+安柏：愿风神护佑你，陌生人！
+安柏：我是西风骑士团侦察骑士，安柏。
+安柏：你不是蒙德市民吧？那么，请说明自己的身份！
+派蒙：冷静一下，我们不是可疑人员——
+安柏：可疑人员都会这么说。
+旅行者：你好，我是旅行者。
+安柏：……听着不像是本地人的名字。
+安柏：还有这只……吉祥物，又是怎么回事？
+旅行者：是应急食品。
+派蒙：完全不对！怎么还不如吉祥物啊！
+安柏：总而言之，是旅行者对吧。
+安柏：最近蒙德周围有巨龙出没，你们还是尽快进城比较好。
+安柏：这里离蒙德不远，就由身为骑士的我来护送你们一程。
+派蒙：欸？你出城没有什么别的任务吗？
+安柏：当然有，不过放心，任务路上也会保证你们的安全。
+安柏：而且……我也不能放着可疑人士不管！
+"""
 
 ##############################################################################
+
+context = context.strip().split('\n')
+for c in range(len(context)):
+    context[c] = context[c].strip()
+context = '\n' + '\n'.join(context)
 
 with open(WORD_NAME + '.json', "r", encoding="utf-16") as result_file:
     word_table = json.load(result_file)   
