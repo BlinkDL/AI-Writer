@@ -21,6 +21,8 @@ WORD_NAME = 'model/ww-20210723'
 NUM_OF_RUNS = 9999
 LENGTH_OF_EACH = 400
 
+min_p_ratio = 0.1 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
+
 # 这是你的开头，建议开头用 \n 表示这是新段落
 # 注意，不应出现 \r，不应出现重复空行（\n\n），段落开头和结尾不应有空格，因为清洗数据时去除了这些情况
 
@@ -90,7 +92,7 @@ for run in range(NUM_OF_RUNS):
         if train_dataset.itos[int(x[real_len-1])] == '\n':
             char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=0.995)
         else:
-            char = src.utils.sample_logits(out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=0.02)
+            char = src.utils.sample_logits(out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio)
 #             char = src.utils.sample_logits(out, pos, temperature=1.0, top_k=100, top_p=0.99)
 #             char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=0.95)
     
