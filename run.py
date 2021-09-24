@@ -12,7 +12,6 @@ from src.model_v101 import GPT, GPTConfig
 
 print('\nAI-writer demo https://github.com/BlinkDL/AI-Writer')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
-print('\nLoading model...', end=' ')
 
 RUN_DEVICE = 'gpu' # gpu 或 cpu
 
@@ -70,10 +69,17 @@ context = """
 
 ##############################################################################
 
+nLayers = 12
+nHead = 12
+nEmb = 768
+block_size = 256
+
 context = context.strip().split('\n')
 for c in range(len(context)):
     context[c] = context[c].strip()
 context = '\n' + '\n'.join(context)
+
+print('您输入的开头有 ' + str(len(context)) + ' 个字。注意，模型只能看到最后 ' + str(block_size) + ' 个字。')
 
 with open(WORD_NAME + '.json', "r", encoding="utf-16") as result_file:
     word_table = json.load(result_file)   
@@ -85,11 +91,7 @@ train_dataset.stoi = {v: int(k) for k, v in word_table.items()}
 train_dataset.itos = {int(k): v for k, v in word_table.items()}
 UNKNOWN_CHAR = train_dataset.stoi['\ue083']
 
-nLayers = 12
-nHead = 12
-nEmb = 768
-block_size = 256
-
+print('\nLoading model...', end=' ')
 model = GPT(GPTConfig(vocab_size, block_size, n_layer=nLayers, n_head=nHead, n_embd=nEmb))
 if RUN_DEVICE == 'gpu':
     model = model.cuda()
