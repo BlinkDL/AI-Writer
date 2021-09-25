@@ -26,7 +26,7 @@ WORD_NAME = 'model/ww-20210723'
 NUM_OF_RUNS = 9999
 LENGTH_OF_EACH = 300
 
-min_p_ratio = 0.1 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
+min_p_ratio = 0.02 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
 
 # 开头这样输入：
 # context = "我"
@@ -133,7 +133,7 @@ for run in range(NUM_OF_RUNS):
         if train_dataset.itos[int(x[real_len-1])] == '\n':
             char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=0.99)
         else:
-            char = src.utils.sample_logits(out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio, top_k=150, top_p=0.99)
+            char = src.utils.sample_logits(out, pos, temperature=0.9, min_p_pow=2.0, min_p_ratio=min_p_ratio)
     
         if real_len < block_size:
             x[real_len] = char
