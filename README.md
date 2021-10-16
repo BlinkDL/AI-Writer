@@ -1,6 +1,8 @@
 # AI-Writer
 用魔改 GPT 生成网文。Tuned GPT for novel generation.
 
+***最新加入纯 CPU 快速生成，每秒生成 10 个字，下载请加 QQ 群 143626394（加入时请简单自我介绍）。***
+
 使用方法：
 1. 下载模型 https://drive.google.com/file/d/1qtyAtUfq9rtWcGUV-h9_6sz4kWTUg5EF （400M），解压 pth 到 model 目录（如果下载不了请加 QQ 群 143626394）。
 2. 运行 python run.py
@@ -11,7 +13,7 @@
 
 同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
 
-交流 QQ 群 143626394 （加入时请简单自我介绍）。我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
+交流 QQ 群 143626394（加入时请简单自我介绍）。我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
 
 ![Screenshot](AI-Writer.gif)
 
