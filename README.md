@@ -3,13 +3,15 @@
 
 ***最新加入纯 CPU 快速生成，每秒生成 10 个字，下载请加 QQ 群 143626394（加入时请简单自我介绍）。***
 
-采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM
-
 使用方法：
 1. 下载模型，在右边 Release（或者看群文件），解压 pth 到 model 目录。欢迎分享下载后的模型。
 2. 运行 python run.py
 
+***最新加入网页界面，执行 python server.py 然后打开 web-client 即可。***
+
 注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
+
+采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM
 
 模型中的技巧见 https://github.com/BlinkDL/minGPT-tuned 。
 
