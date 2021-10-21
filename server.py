@@ -102,8 +102,8 @@ def SocketWorker(queueX, queueZ):
         try:
             msg = json.loads(msg)
             if msg['op'].lower() == 'get':
-                if _DEBUG_LEVEL_ > 0:
-                    print('get', websocket.client_id, msg['txt'])
+                # if _DEBUG_LEVEL_ > 0:
+                #     print('get', websocket.client_id, msg['txt'])
                 queueZ.put((websocket.client_id, msg['txt']))
         except Exception as e:
             print(e)
@@ -200,8 +200,8 @@ def NeuralWorker(queueZ, queueX):
             context[c] = context[c].strip().strip('\u3000').strip('\r')
         context = list(filter(lambda c: c != '', context))
         context = '\n' + ('\n'.join(context)).strip()
-        print('您输入的开头有 ' + str(len(context)) +
-              ' 个字。注意，模型只会看最后 ' + str(ctx_len) + ' 个字。')
+        # print('您输入的开头有 ' + str(len(context)) +
+        #       ' 个字。注意，模型只会看最后 ' + str(ctx_len) + ' 个字。')
 
         NUM_OF_RUNS = 1
         for run in range(NUM_OF_RUNS):
@@ -247,11 +247,12 @@ def NeuralWorker(queueZ, queueX):
         outmsg['txt'] = out_txt
         queueX.put((K, json.dumps(outmsg, separators=(',', ':'))))
 
-        if _DEBUG_LEVEL_ > 1:
-            print(time.time() - ttt, end=' ')
+        # if _DEBUG_LEVEL_ > 1:
+        #     print(time.time() - ttt, end=' ')
         ttt = time.time()
         if _DEBUG_LEVEL_ > 1:
-            print(out_txt)
+            print(context, end = '')
+            print(out_txt + '\n' + ('=' * 20))
 
 
 if __name__ == "__main__":
