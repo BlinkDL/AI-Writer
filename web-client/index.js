@@ -66,7 +66,7 @@ if (txt_stored)
 myLog("opening... 请稍等...")
 connect();
 
-let lastGeneratePosition = 0
+let lastGeneratePosition = -1
 
 function sendText() {
     let msg = {}
@@ -78,8 +78,12 @@ function sendText() {
 }
 
 function rewriteText() {
-    if (lastGeneratePosition != 0) {
-        let txt = document.getElementById("textArea").value
+    let txt = document.getElementById("textArea").value
+    if (lastGeneratePosition == -1) {
+        if (txt.length == 0)
+            lastGeneratePosition = 0
+    }
+    if (lastGeneratePosition != -1) {
         txt = txt.substr(0, lastGeneratePosition)
         document.getElementById("textArea").value = txt
     }

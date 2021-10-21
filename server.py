@@ -197,7 +197,8 @@ def NeuralWorker(queueZ, queueX):
         context = Z
         context = context.strip().split('\n')
         for c in range(len(context)):
-            context[c] = context[c].strip().strip('\u3000')
+            context[c] = context[c].strip().strip('\u3000').strip('\r')
+        context = list(filter(lambda c: c != '', context))
         context = '\n' + ('\n'.join(context)).strip()
         print('您输入的开头有 ' + str(len(context)) +
               ' 个字。注意，模型只会看最后 ' + str(ctx_len) + ' 个字。')
