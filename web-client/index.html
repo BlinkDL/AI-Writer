@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AI人工智障写作</title>
+</head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    body {
+        background-color: #ffd;
+        overflow-y: scroll;
+        color: #000;
+        font-family: "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+        min-height: 90vh;
+    }
+
+    a:link {
+        color: inherit;
+    }
+
+    a {
+        color: inherit;
+    }
+
+    a:hover {
+        color: #f00 !important;
+    }
+
+    a:visited {
+        color: inherit;
+    }
+
+    #textArea {
+        font-family: "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+        line-height: 1.5;
+        font-size: 150%;
+        height: 100em;
+        padding: 0.5em;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #textWrap {
+        width: 90%;
+        margin: 0 auto;
+        max-width: 50em;
+    }
+
+    .writeBtn {
+        width: 45%;
+        height: 3em;
+        font-size: 150%;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div style="text-align: center; margin: 20px 0; line-height: 2;">
+        <p>AI人工智障写作 <a href="https://github.com/BlinkDL/AI-Writer" target="_blank">https://github.com/BlinkDL/AI-Writer</a> 请关注我的知乎 <a href="https://zhuanlan.zhihu.com/p/423646620" target="_blank">https://zhuanlan.zhihu.com/p/423646620</a></p>
+        <p style="color:darkred">请记得经常备份你的写作内容！模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。</p>
+        <p></p>
+    </div>
+    <div id="textWrap">
+        <div style="width: 100%; display: flex; flex-direction:row; justify-content:space-evenly;">
+            <button class="writeBtn" onclick="sendText()">续写 (alt+Q)</button>
+            <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
+        </div>
+        <br>
+        <textarea id="textArea">这是</textarea>
+    </div>
+    <div id=myLog>
+    </div>
+</body>
+
+<script src="index.js"></script>
+
+</html>

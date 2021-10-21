@@ -15,7 +15,7 @@ from src.model import GPT, GPTConfig
 # src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
 
 print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
-print('欢迎关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
+print('请关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
 RUN_DEVICE = 'gpu' # gpu 或 cpu
@@ -55,8 +55,8 @@ n_ffn = n_embd
 
 context = context.strip().split('\n')
 for c in range(len(context)):
-    context[c] = context[c].strip()
-context = '\n' + '\n'.join(context)
+    context[c] = context[c].strip().strip('\u3000')
+context = '\n' + ('\n'.join(context)).strip()
 print('您输入的开头有 ' + str(len(context)) + ' 个字。注意，模型只会看最后 ' + str(ctx_len) + ' 个字。')
 
 with open(WORD_NAME + '.json', "r", encoding="utf-16") as result_file:
