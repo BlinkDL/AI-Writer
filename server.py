@@ -89,8 +89,8 @@ def SocketWorker(queueX, queueZ):
                 K, msg = msg
                 for x in USERS:
                     if x.client_id == K:
-                        if _DEBUG_LEVEL_ > 0:
-                            print('sent X', K)
+                        # if _DEBUG_LEVEL_ > 0:
+                        #     print('sent X', K)
                         await x.send(msg)
                         break
             elif msg != '':
@@ -251,7 +251,7 @@ def NeuralWorker(queueZ, queueX):
             print(time.time() - ttt, end=' ')
         ttt = time.time()
         if _DEBUG_LEVEL_ > 1:
-            print('done Z', K)
+            print(out_txt)
 
 
 if __name__ == "__main__":
