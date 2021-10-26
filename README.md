@@ -19,7 +19,11 @@
 
 我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
 
+新玄幻模型效果：
+
 ![Screenshot](AI-Writer.jpg)
+
+旧模型效果：
 
 ![Screenshot](AI-Writer.gif)
 
