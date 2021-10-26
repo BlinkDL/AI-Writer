@@ -7,7 +7,9 @@
 1. 下载模型，在右边 Release（或者看群文件），解压 pth 到 model 目录。欢迎分享下载后的模型。
 2. 运行 python run.py
 
-***最新加入网页界面，执行 python server.py 然后打开 web-client 即可。***
+***最新加入网页界面，执行 python server.py 然后打开 web-client 中的 index.html 即可。***
+
+![Screenshot](server.jpg)
 
 注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
 
