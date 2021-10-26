@@ -15,8 +15,6 @@
 
 采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM
 
-模型中的技巧见 https://github.com/BlinkDL/minGPT-tuned 。
-
 同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
 
 我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
