@@ -19,6 +19,8 @@
 
 我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
 
+![Screenshot](AI-Writer.jpg)
+
 ![Screenshot](AI-Writer.gif)
 
 > 魔皇突然倒退了一步，伸手摸了一下身上的伤口，然后朝着四周的虚空一指，原本在地下的虚空魔法阵直接消失无踪，这里顿时恢复了活性。
