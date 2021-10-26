@@ -12,8 +12,8 @@ PORT_NUM = 8266
 
 RUN_DEVICE = 'gpu'  # gpu 或 cpu
 
-MODEL_NAME = 'model/ww-102-L12-H12-C768-T512-20210930'
-WORD_NAME = 'model/ww-20210821'
+MODEL_NAME = 'model/xuanhuan-2021-10-26'
+WORD_NAME = 'model/xuanhuan-2021-10-26'
 
 min_p_ratio = 0.02  # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
 
