@@ -18,7 +18,10 @@ print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
 print('请关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
-RUN_DEVICE = 'gpu' # gpu 或 cpu
+# gpu：只支持 nvidia 显卡，需要 cuda+cudnn
+# dml：支持 amd 和 intel 显卡，需要不同的模型和一些包
+# cpu：没有显卡就选它
+RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
 MODEL_NAME = 'model/xuanhuan-2021-10-26'
 WORD_NAME = 'model/xuanhuan-2021-10-26'
@@ -70,12 +73,20 @@ train_dataset.itos = {int(k): v for k, v in word_table.items()}
 UNKNOWN_CHAR = train_dataset.stoi['\ue083']
 
 print('\nLoading model...', end=' ')
-model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer, n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
-if RUN_DEVICE == 'gpu':
-    model = model.cuda()
-    model.load_state_dict(torch.load(MODEL_NAME + '.pth').state_dict())
+if RUN_DEVICE == 'dml':
+    import onnxruntime as rt
+    sess_options = rt.SessionOptions()
+    sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
+    sess_options.enable_mem_pattern = False
+    rt_session = rt.InferenceSession(MODEL_NAME + '.onnx', sess_options=sess_options)
+    rt_session.set_providers(['DmlExecutionProvider'])    
 else:
-    model.load_state_dict(torch.load(MODEL_NAME + '.pth', map_location='cpu').state_dict())
+    model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer, n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
+    if RUN_DEVICE == 'gpu':
+        model = model.cuda()
+        model.load_state_dict(torch.load(MODEL_NAME + '.pth').state_dict())
+    else:
+        model.load_state_dict(torch.load(MODEL_NAME + '.pth', map_location='cpu').state_dict())
 
 print('done:', MODEL_NAME, '&', WORD_NAME)
 
@@ -96,10 +107,18 @@ for run in range(NUM_OF_RUNS):
             print_begin = real_len
 
         with torch.no_grad():
-            xxx = torch.tensor(x[-ctx_len:], dtype=torch.long)[None,...]
-            if RUN_DEVICE == 'gpu':
-                xxx = xxx.cuda()
-            out, _ = model(xxx)
+            if RUN_DEVICE == 'dml':
+                if real_len < ctx_len:
+                    xxx = np.pad(x, (0, ctx_len - real_len))
+                else:
+                    xxx = x
+                out = rt_session.run(None, {rt_session.get_inputs()[0].name: [xxx[-ctx_len:]]})
+                out = torch.tensor(out[0])
+            else:
+                xxx = torch.tensor(x[-ctx_len:], dtype=torch.long)[None,...]
+                if RUN_DEVICE == 'gpu':
+                    xxx = xxx.cuda()
+                out, _ = model(xxx)            
             out[:, :, UNKNOWN_CHAR] = -float('Inf')
         pos = -1 if real_len >= ctx_len else real_len - 1
 
