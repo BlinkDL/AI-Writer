@@ -168,7 +168,7 @@ def NeuralWorker(queueZ, queueX):
     print('请关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
     print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
-    print('loading model...')
+    print(f'\nLoading model for {RUN_DEVICE}...', end=' ')
 
     with open(WORD_NAME + '.json', "r", encoding="utf-16") as result_file:
         word_table = json.load(result_file)

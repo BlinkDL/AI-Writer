@@ -72,7 +72,7 @@ train_dataset.stoi = {v: int(k) for k, v in word_table.items()}
 train_dataset.itos = {int(k): v for k, v in word_table.items()}
 UNKNOWN_CHAR = train_dataset.stoi['\ue083']
 
-print('\nLoading model...', end=' ')
+print(f'\nLoading model for {RUN_DEVICE}...', end=' ')
 if RUN_DEVICE == 'dml':
     import onnxruntime as rt
     sess_options = rt.SessionOptions()
