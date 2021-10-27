@@ -113,6 +113,6 @@ for run in range(NUM_OF_RUNS):
 
         if i % 10 == 9 or i == LENGTH_OF_EACH-1 or i < 10 or RUN_DEVICE != 'gpu':
             completion = ''.join([train_dataset.itos[int(i)] for i in x[print_begin:real_len]])
-            print(completion.replace('\n', '\n  '), end = '')
+            print(completion.replace('\n', '\n  '), end = '', flush=True)
             print_begin = real_len
     print()
