@@ -10,7 +10,10 @@ import time
 _DEBUG_LEVEL_ = 2  # 2 = full, 1 = partial, 0 = none
 PORT_NUM = 8266
 
-RUN_DEVICE = 'gpu'  # gpu 或 cpu
+# gpu：只支持 nvidia 显卡，需要 cuda+cudnn
+# dml：支持 amd 和 intel 显卡，需要不同的模型和一些包
+# cpu：没有显卡就选它
+RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
 MODEL_NAME = 'model/xuanhuan-2021-10-26'
 WORD_NAME = 'model/xuanhuan-2021-10-26'
@@ -177,14 +180,41 @@ def NeuralWorker(queueZ, queueX):
     train_dataset.itos = {int(k): v for k, v in word_table.items()}
     UNKNOWN_CHAR = train_dataset.stoi['\ue083']
 
-    model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer,
-                n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
-    if RUN_DEVICE == 'gpu':
-        model = model.cuda()
-        model.load_state_dict(torch.load(MODEL_NAME + '.pth').state_dict())
+    if RUN_DEVICE == 'dml':
+        import onnxruntime as rt
+        sess_options = rt.SessionOptions()
+        sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
+        sess_options.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
+        sess_options.enable_mem_pattern = False
+        rt_session = rt.InferenceSession(MODEL_NAME + '.onnx', sess_options=sess_options)
+        rt_session.set_providers(['DmlExecutionProvider'])
     else:
-        model.load_state_dict(torch.load(
-            MODEL_NAME + '.pth', map_location='cpu').state_dict())
+        model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer, n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
+        m2 = torch.load(MODEL_NAME + '.pth', map_location='cpu').state_dict()
+        for i in range(n_layer):
+            prefix = f'blocks.{i}.attn.'
+            time_w = m2[prefix + 'time_w']
+            time_alpha = m2[prefix + 'time_alpha']
+            time_beta = m2[prefix + 'time_beta']
+            mask = m2[prefix + 'mask']
+            
+            TT = ctx_len
+            T = ctx_len
+            w = F.pad(time_w, (0, TT))
+            w = torch.tile(w, [TT])
+            w = w[:, :-TT].reshape(-1, TT, 2 * TT - 1)
+            w = w[:, :, TT-1:]
+            w = w[:, :T, :T] * time_alpha[:, :, :T] * time_beta[:, :T, :]
+            w = w.masked_fill(mask[:T, :T] == 0, 0)    
+            
+            m2[prefix + 'time_ww'] = w
+            del m2[prefix + 'time_w']
+            del m2[prefix + 'time_alpha']
+            del m2[prefix + 'time_beta']
+            del m2[prefix + 'mask']    
+        if RUN_DEVICE == 'gpu':
+            model = model.cuda()
+        model.load_state_dict(m2)
 
     print('done:', MODEL_NAME, '&', WORD_NAME)
 
@@ -219,12 +249,20 @@ def NeuralWorker(queueZ, queueX):
                     print_begin = real_len
 
                 with torch.no_grad():
-                    xxx = torch.tensor(
-                        x[-ctx_len:], dtype=torch.long)[None, ...]
-                    if RUN_DEVICE == 'gpu':
-                        xxx = xxx.cuda()
-                    out, _ = model(xxx)
-                    out[:, :, UNKNOWN_CHAR] = -float('Inf')
+                    if RUN_DEVICE == 'dml':
+                        if real_len < ctx_len:
+                            xxx = np.pad(x, (0, ctx_len - real_len))
+                        else:
+                            xxx = x
+                        out = rt_session.run(None, {rt_session.get_inputs()[0].name: [xxx[-ctx_len:]]})
+                        out = torch.tensor(out[0])
+                    else:
+                        xxx = torch.tensor(x[-ctx_len:], dtype=torch.long)[None,...]
+                        if RUN_DEVICE == 'gpu':
+                            xxx = xxx.cuda()
+                        out, _ = model(xxx)            
+                out[:, :, UNKNOWN_CHAR] = -float('Inf')
+
                 pos = -1 if real_len >= ctx_len else real_len - 1
 
                 if train_dataset.itos[int(x[real_len-1])] == '\n':

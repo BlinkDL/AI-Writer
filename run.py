@@ -15,7 +15,7 @@ from src.model import GPT, GPTConfig
 # src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
 
 print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
-print('请关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
+print('请关注我的知乎 https://zhuanlan.zhihu.com/p/423646620')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
 # gpu：只支持 nvidia 显卡，需要 cuda+cudnn
@@ -77,16 +77,37 @@ if RUN_DEVICE == 'dml':
     import onnxruntime as rt
     sess_options = rt.SessionOptions()
     sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
+    sess_options.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
     sess_options.enable_mem_pattern = False
     rt_session = rt.InferenceSession(MODEL_NAME + '.onnx', sess_options=sess_options)
-    rt_session.set_providers(['DmlExecutionProvider'])    
+    rt_session.set_providers(['DmlExecutionProvider'])
 else:
     model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer, n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
+    m2 = torch.load(MODEL_NAME + '.pth', map_location='cpu').state_dict()
+    for i in range(n_layer):
+        prefix = f'blocks.{i}.attn.'
+        time_w = m2[prefix + 'time_w']
+        time_alpha = m2[prefix + 'time_alpha']
+        time_beta = m2[prefix + 'time_beta']
+        mask = m2[prefix + 'mask']
+        
+        TT = ctx_len
+        T = ctx_len
+        w = F.pad(time_w, (0, TT))
+        w = torch.tile(w, [TT])
+        w = w[:, :-TT].reshape(-1, TT, 2 * TT - 1)
+        w = w[:, :, TT-1:]
+        w = w[:, :T, :T] * time_alpha[:, :, :T] * time_beta[:, :T, :]
+        w = w.masked_fill(mask[:T, :T] == 0, 0)    
+        
+        m2[prefix + 'time_ww'] = w
+        del m2[prefix + 'time_w']
+        del m2[prefix + 'time_alpha']
+        del m2[prefix + 'time_beta']
+        del m2[prefix + 'mask']    
     if RUN_DEVICE == 'gpu':
         model = model.cuda()
-        model.load_state_dict(torch.load(MODEL_NAME + '.pth').state_dict())
-    else:
-        model.load_state_dict(torch.load(MODEL_NAME + '.pth', map_location='cpu').state_dict())
+    model.load_state_dict(m2)
 
 print('done:', MODEL_NAME, '&', WORD_NAME)
 

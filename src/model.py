@@ -19,16 +19,9 @@ class RWKV_TimeMix(nn.Module):
         self.n_head = config.n_head
         self.head_size = config.n_attn // config.n_head
 
-        ww = torch.ones(config.n_head, config.ctx_len)
-        self.time_w = nn.Parameter(ww)
-
-        self.time_alpha = nn.Parameter(
-            torch.ones(self.n_head, 1, config.ctx_len))
-        self.time_beta = nn.Parameter(
-            torch.ones(self.n_head, config.ctx_len, 1))
+        self.time_ww = nn.Parameter(
+            torch.ones(config.n_head, config.ctx_len, config.ctx_len))
         self.time_gamma = nn.Parameter(torch.ones(config.ctx_len, 1))
-        self.register_buffer("mask", torch.tril(
-            torch.ones(config.ctx_len, config.ctx_len)))
 
         self.time_shift = nn.ZeroPad2d((0, 0, 1, -1))
 
@@ -44,13 +37,6 @@ class RWKV_TimeMix(nn.Module):
 
     def forward(self, x):
         B, T, C = x.size()
-        TT = self.ctx_len
-        w = F.pad(self.time_w, (0, TT))
-        w = torch.tile(w, [TT])
-        w = w[:, :-TT].reshape(-1, TT, 2 * TT - 1)
-        w = w[:, :, TT-1:]
-        w = w[:, :T, :T] * self.time_alpha[:, :, :T] * self.time_beta[:, :T, :]
-        w = w.masked_fill(self.mask[:T, :T] == 0, 0)
 
         x = torch.cat(
             [self.time_shift(x[:, :, :C//2]), x[:, :, C//2:]], dim=-1)
@@ -65,14 +51,13 @@ class RWKV_TimeMix(nn.Module):
 
         kv = (k * v).view(B, T, self.n_head, self.head_size)
 
-        wkv = (torch.einsum('htu,buhc->bthc', w, kv)
+        wkv = (torch.einsum('htu,buhc->bthc', self.time_ww[:,:T,:T], kv)
                ).contiguous().view(B, T, -1)
 
         rwkv = torch.sigmoid(r) * wkv / sum_k
 
         rwkv = self.output(rwkv)
         return rwkv * self.time_gamma[:T, :]
-
 
 class RWKV_ChannelMix(nn.Module):
     def __init__(self, config, layer_id):
