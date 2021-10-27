@@ -1,11 +1,13 @@
 # AI-Writer
 用魔改 GPT 生成网文。Tuned GPT for novel generation.
 
-***最新加入纯 CPU 快速生成，每秒生成 10 个字，下载请加 QQ 群 143626394（加入时请简单自我介绍）。***
+现已支持 N卡 A卡 I卡 GPU 加速。
 
 使用方法：
 1. 下载模型，在右边 Release（或者看群文件），解压 pth 到 model 目录。欢迎分享下载后的模型。
 2. 运行 python run.py
+
+也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加 QQ 群 143626394（加入时请简单自我介绍）。
 
 ***最新加入网页界面，执行 python server.py 然后打开 web-client 中的 index.html 即可。***
 
