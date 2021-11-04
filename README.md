@@ -18,6 +18,8 @@
 
 我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
 
+网友移植的 Paddle 版：https://github.com/JunnYu/Paddle-AI-Writer 。
+
 新玄幻模型效果：
 
 ![Screenshot](AI-Writer.jpg)
