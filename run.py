@@ -18,18 +18,22 @@ print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
 print('请关注我的知乎 https://zhuanlan.zhihu.com/p/423646620')
 print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
-# gpu：只支持 nvidia 显卡，需要 cuda+cudnn
-# dml：支持 amd 和 intel 显卡，需要不同的模型和一些包
-# cpu：没有显卡就选它
+#
+# 需要 pytorch 1.9.x 及以上版本
+#
+# gpu：只支持 nvidia 显卡，速度最快，需要 cuda+cudnn
+# dml：支持 amd / intel / nvidia 显卡，需要不同的模型，需要 pip install onnxruntime-directml 然后在 run.py 和 server.py 设置为 dml 模式
+# cpu：没显卡就选它，但也是用 nvidia 卡的模型
+
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/xuanhuan-2021-10-26'
-WORD_NAME = 'model/xuanhuan-2021-10-26'
+MODEL_NAME = 'model/xuanhuan-2021-10-26' # 模型名，例如 yanqing-2021-10-29 xuanhuan-2021-10-26
+WORD_NAME = 'model/xuanhuan-2021-10-26' # 这个也修改
 
-NUM_OF_RUNS = 9999
+NUM_OF_RUNS = 9999 # 写多少遍
 LENGTH_OF_EACH = 200 # 每次写多少字
 
-min_p_ratio = 0.02 # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
+min_p_ratio = 0.02 # 这个的范围是 0 到 1。越大，生成效果越规矩。越小，变化越多。自己试试 0 和 0.1 和 1.0 的效果就知道了
 
 # 开头这样输入：
 # context = "我"
