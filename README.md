@@ -1,7 +1,7 @@
 # AI-Writer
 用魔改 GPT 生成网文。Tuned GPT for novel generation. 现已支持 N卡 A卡 I卡 GPU 加速。
 
-1. 下载模型，在右边 Release（或者看 QQ 群文件），解压到 model 目录（自己新建目录）。欢迎分享下载后的模型。
+1. 下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录（自己新建目录）。欢迎分享下载后的模型。
 2. 运行 python run.py（或双击run.bat）。
 
 ***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
@@ -13,6 +13,7 @@
 3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
 4. no such file or directory: 'model/xxx' --> 先确定模型解压到 model 目录。然后在命令行需要先进入项目所在的目录，再用python运行py。
 5. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。
+6. 怎么训练 --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
 ```
 最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
 
