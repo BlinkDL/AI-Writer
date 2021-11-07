@@ -1,12 +1,17 @@
 # AI-Writer
 用魔改 GPT 生成网文。Tuned GPT for novel generation. 现已支持 N卡 A卡 I卡 GPU 加速。
 
-1. pytorch 用 1.9 以后的版本。
-2. 下载模型，在右边 Release（或者看 QQ 群文件），解压到 model 目录（自己新建目录）。欢迎分享下载后的模型。
-3. 运行 python run.py。
+1. 下载模型，在右边 Release（或者看 QQ 群文件），解压到 model 目录（自己新建目录）。欢迎分享下载后的模型。
+2. 运行 python run.py。
 
 ***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
 
+常见问题：
+```
+1. model 目录在哪里 --> 自己新建 model 目录。
+2. no module named 'xxx' --> 执行 pip install xxx 缺什么就装什么。注意N卡GPU版需要装pytorch的cuda版。注意A/I卡GPU版需要装onnxruntime-directml。
+3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本
+```
 最新加入网页界面，执行 python server.py 然后打开 web-client 中的 index.html 即可。
 
 ![Screenshot](server.jpg)
