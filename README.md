@@ -4,7 +4,7 @@
 1. 下载模型，在右边 Release（或者看 QQ 群文件），解压到 model 目录。欢迎分享下载后的模型。
 2. 运行 python run.py
 
-***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加 QQ 群 143626394（加入时请简单自我介绍）。***
+***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
 
 最新加入网页界面，执行 python server.py 然后打开 web-client 中的 index.html 即可。
 
@@ -17,6 +17,8 @@
 同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
 
 我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
+
+网友移植的 Paddle 版：https://github.com/JunnYu/Paddle-AI-Writer 。
 
 新玄幻模型效果：
 
