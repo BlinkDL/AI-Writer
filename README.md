@@ -13,7 +13,8 @@
 3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
 4. no such file or directory: 'model/xxx' --> 先确定模型解压到 model 目录。然后在命令行需要先进入项目所在的目录，再用python运行py。
 5. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。
-6. 怎么训练 --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
+6. 怎么训练？ --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
+7. 写作原理？ --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
 ```
 最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
 
