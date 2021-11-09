@@ -8,6 +8,7 @@
 
 常见问题：
 ```
+0. 先打开 run.py 和 server.py 看里面的设置。例如，玄幻和言情模型，需要在里面手工切换。
 1. model 目录在哪里 --> 自己新建 model 目录。
 2. no module named 'xxx' --> 执行 pip install xxx 缺什么就装什么。注意N卡GPU版需要装pytorch的cuda版。注意A/I卡GPU版需要装onnxruntime-directml。
 3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
