@@ -13,7 +13,7 @@ Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111（在QQ群�
 Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml。用A/I卡模型。在 run.py 和 server.py 设置为 dml 模式。
 WindowsCPU版：装python3.8，pip install torch onnxruntime，用N卡模型。在 run.py 和 server.py 设置为 cpu 模式。
 Linux有N卡：和【Windows有N卡】相同
-Linux有A/I卡：可以用ONNX Runtime加速，自己研究。不懂就用CPU版。
+Linux有A/I卡：可以用https://onnxruntime.ai/加速，自己研究。不懂就用CPU版。
 LinuxCPU版：和【WindowsCPU版】相同
 Mac：目前只能CPU版。和【WindowsCPU版】相同
 ```
