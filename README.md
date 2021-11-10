@@ -6,14 +6,28 @@
 
 ***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
 
+最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
+
+![Screenshot](server.jpg)
+
+注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
+
+***采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM***
+
+同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
+
+我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
+
+网友移植的 Paddle 版：https://github.com/JunnYu/Paddle-AI-Writer 。
+
 安装方法：
 ```
 Windows小白：先试QQ群文件的【纯CPU exe版】，但CPU需要AVX2（例如intel四代以上），不支持AVX2就用【WindowsCPU版】
 Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111（在QQ群文件都有）。用940mx也能跑。用1050ti就挺快。目前只需要2G显存，以后需要4G显存
-Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml。用A/I卡模型。在 run.py 和 server.py 设置为 dml 模式。
-WindowsCPU版：装python3.8，pip install torch，用N卡模型。在 run.py 和 server.py 设置为 cpu 模式。
+Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml。用A/I卡模型。在 run.py 和 server.py 设置为 dml 模式
+WindowsCPU版：装python3.8，pip install torch，用N卡模型。在 run.py 和 server.py 设置为 cpu 模式
 Linux有N卡：和【Windows有N卡】相同
-Linux有A/I卡：可以用https://onnxruntime.ai/加速，自己研究。不懂就用CPU版。
+Linux有A/I卡：可以用https://onnxruntime.ai/加速，自己研究。不懂就用CPU版
 LinuxCPU版：和【WindowsCPU版】相同
 Mac：目前只能CPU版。和【WindowsCPU版】相同
 ```
@@ -28,19 +42,6 @@ Mac：目前只能CPU版。和【WindowsCPU版】相同
 6. 怎么训练？ --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
 7. 写作原理？ --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
 ```
-最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
-
-![Screenshot](server.jpg)
-
-注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
-
-***采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM***
-
-同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
-
-我的知乎是 https://www.zhihu.com/people/bopengbopeng 。
-
-网友移植的 Paddle 版：https://github.com/JunnYu/Paddle-AI-Writer 。
 
 新玄幻模型效果：
 
