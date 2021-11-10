@@ -8,14 +8,14 @@
 
 安装方法：
 ```
-Windows小白：进QQ群，先试纯 CPU exe版
+Windows小白：进QQ群，先试纯CPU exe版
 Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111
 Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml
 WindowsCPU版：装python3.8，pip install torch onnxruntime
 Linux有N卡：参考Windows有N卡
 Linux有A/I卡：装python3.8，pip install torch onnxruntime-gpu
 LinuxCPU版：参考WindowsCPU版
-Mac：目前只能CPU版。参考WindowsCPU版。
+Mac：目前只能CPU版。参考WindowsCPU版
 ```
 
 常见问题：
