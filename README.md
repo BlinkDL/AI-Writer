@@ -1,8 +1,8 @@
 # AI-Writer
 用魔改 GPT 生成网文。Tuned GPT for novel generation. 现已支持 N卡 A卡 I卡 GPU 加速。
 
-1. 下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录（自己新建目录）。欢迎分享下载后的模型。
-2. 运行 python run.py（或双击run.bat）。
+1. 先看下面的【安装方法】。下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录（自己新建目录）。
+2. 运行 python run.py（或双击run.bat），建议在cmd运行，看出错提示。有问题请看【安装方法】和【常见问题】。
 
 ***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
 
@@ -33,14 +33,14 @@ Mac：目前只能CPU版。和【WindowsCPU版】相同
 ```
 常见问题：
 ```
-0. 先打开 run.py 和 server.py 看里面的设置。例如，玄幻和言情模型，需要在里面手工切换。
-1. model 目录在哪里 --> 自己新建 model 目录。
-2. no module named 'xxx' --> 执行 pip install xxx 缺什么就装什么。注意N卡GPU版需要装pytorch的cuda版。注意A/I卡GPU版需要装onnxruntime-directml。
-3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
-4. no such file or directory: 'model/xxx' --> 先确定模型解压到 model 目录。然后在命令行需要先进入项目所在的目录，再用python运行py。
-5. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。
-6. 怎么训练？ --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
-7. 写作原理？ --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
+1. 先打开 run.py 和 server.py 看里面的设置。例如，玄幻和言情模型，需要在里面手工切换。
+2. model 目录在哪里 --> 自己新建 model 目录。
+3. no module named 'xxx' --> 执行 pip install xxx 缺什么就装什么。注意N卡GPU版需要装pytorch的cuda版。注意A/I卡GPU版需要装onnxruntime-directml。
+4. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
+5. no such file or directory: 'model/xxx' --> 先确定模型解压到 model 目录。然后在命令行需要先进入项目所在的目录，再用python运行py。
+6. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。
+7. 怎么训练？ --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
+8. 写作原理？ --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
 ```
 
 新玄幻模型效果：
