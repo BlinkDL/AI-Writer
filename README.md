@@ -6,6 +6,18 @@
 
 ***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
 
+安装方法：
+```
+Windows小白：进QQ群，先试纯 CPU exe版
+Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111
+Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml
+WindowsCPU版：装python3.8，pip install torch onnxruntime
+Linux有N卡：参考Windows有N卡
+Linux有A/I卡：装python3.8，pip install torch onnxruntime-gpu
+LinuxCPU版：参考WindowsCPU版
+Mac：目前只能CPU版。参考WindowsCPU版。
+```
+
 常见问题：
 ```
 0. 先打开 run.py 和 server.py 看里面的设置。例如，玄幻和言情模型，需要在里面手工切换。
