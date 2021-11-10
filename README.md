@@ -29,7 +29,7 @@ WindowsCPU版：装python3.8，pip install torch，用N卡模型。在 run.py �
 Linux有N卡：和【Windows有N卡】相同
 Linux有A/I卡：可以用https://onnxruntime.ai/加速，自己研究。不懂就用CPU版
 LinuxCPU版：和【WindowsCPU版】相同
-Mac：目前只能CPU版。和【WindowsCPU版】相同
+Mac：目前只能CPU版。和【WindowsCPU版】相同。某些Mac需要用pip3装包，用python3运行。
 ```
 常见问题：
 ```
