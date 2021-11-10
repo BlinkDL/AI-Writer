@@ -20,7 +20,7 @@
 
 网友移植的 Paddle 版：https://github.com/JunnYu/Paddle-AI-Writer 。
 
-安装方法（请装精确版本。例如python装3.8.x；Windows请升级win10 64位）：
+安装方法（请装精确版本。例如python装3.8.x；Windows请升级win10 64位21H1）：
 ```
 Windows小白：先试QQ群文件的【纯CPU exe版】，但CPU需要AVX2（例如intel四代以上），不支持AVX2就用【WindowsCPU版】
 Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111（在QQ群文件都有）。用940mx也能跑。用1050ti就挺快。目前只需要2G显存，以后需要4G显存
