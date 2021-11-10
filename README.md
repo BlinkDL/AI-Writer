@@ -8,7 +8,7 @@
 
 安装方法：
 ```
-Windows小白：进QQ群，先试纯CPU exe版
+Windows小白：先试QQ群文件的【纯CPU exe版】，但CPU需要AVX2（例如intel四代以上），不支持AVX2就用【WindowsCPU版】
 Windows有N卡：装python3.8，CUDA 11.1，CUDNN，torch1.9.1+cu111（在QQ群文件都有）。用940mx也能跑。用1050ti就挺快。目前只需要2G显存，以后需要4G显存
 Windows有A/I卡：装python3.8，pip install torch onnxruntime-directml。注意A卡比N卡慢
 WindowsCPU版：装python3.8，pip install torch onnxruntime
