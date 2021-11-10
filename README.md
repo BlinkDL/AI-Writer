@@ -37,9 +37,10 @@ Mac：目前只能CPU版。和【WindowsCPU版】相同
 2. no module named 'xxx' --> 执行 pip install xxx 缺什么就装什么。注意N卡GPU版需要装pytorch的cuda版。注意A/I卡GPU版需要装onnxruntime-directml。
 3. module 'torch' has no attribute 'tile' --> 需要 pytorch 1.9 以后版本。
 4. no such file or directory: 'model/xxx' --> 先确定模型解压到 model 目录。然后在命令行需要先进入项目所在的目录，再用python运行py。
-5. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。
-6. 怎么训练？ --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
-7. 写作原理？ --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
+5. 怎么设置每次续写多少字 --> 修改run.py和server.py的LENGTH_OF_EACH。可以设置9999999也没问题，但是，单次写很长，容易出现无限循环。
+6. 怎么训练 --> https://github.com/BlinkDL/RWKV-LM 不懂就加QQ群143626394（加入时请简单自我介绍）。
+7. 写作原理 --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
+8. ctx_len是什么意思 --> 模型的记忆长度，就是每次只看最后的多少个字。越大效果越好也越慢。目前最大512。
 ```
 
 新玄幻模型效果：
