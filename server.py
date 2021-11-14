@@ -10,15 +10,19 @@ import time
 _DEBUG_LEVEL_ = 2  # 2 = full, 1 = partial, 0 = none
 PORT_NUM = 8266
 
-# gpu：只支持 nvidia 显卡，需要 cuda+cudnn
-# dml：支持 amd 和 intel 显卡，需要不同的模型和一些包
-# cpu：没有显卡就选它
+#
+# 需要 pytorch 1.9.x 及以上版本
+#
+# gpu：只支持 nvidia 显卡，速度最快，需要 cuda+cudnn
+# dml：支持 amd / intel / nvidia 显卡，需要不同的模型，需要 pip install onnxruntime-directml 然后在 run.py 和 server.py 设置为 dml 模式
+# cpu：没显卡就选它，但也是用 nvidia 卡的模型
+
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/xuanhuan-2021-10-26'
-WORD_NAME = 'model/xuanhuan-2021-10-26'
+MODEL_NAME = 'model/xuanhuan-2021-10-26' # 模型名，例如 yanqing-2021-10-29 xuanhuan-2021-10-26
+WORD_NAME = 'model/xuanhuan-2021-10-26' # 这个也修改
 
-min_p_ratio = 0.02  # 这个数字的范围是 0 到 1。数字越大，生成效果越规矩。数字越小，变化越多。
+min_p_ratio = 0.02  # 这个的范围是 0 到 1。越大，生成效果越规矩。越小，变化越多。自己试试 0 和 0.1 和 1.0 的效果就知道了
 
 LENGTH_OF_EACH = 20  # 每次写多少字
 
@@ -270,7 +274,7 @@ def NeuralWorker(queueZ, queueX):
                         out, pos, temperature=1.0, top_p=0.995)
                 else:
                     char = src.utils.sample_logits(
-                        out, pos, temperature=0.9, min_p_pow=2.0, min_p_ratio=min_p_ratio)
+                        out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio)
 
                 x = np.append(x, char)
                 real_len += 1

@@ -150,7 +150,7 @@ for run in range(NUM_OF_RUNS):
         if train_dataset.itos[int(x[real_len-1])] == '\n':
             char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=0.995)
         else:
-            char = src.utils.sample_logits(out, pos, temperature=0.9, min_p_pow=2.0, min_p_ratio=min_p_ratio)
+            char = src.utils.sample_logits(out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio)
     
         x = np.append(x, char)
         real_len += 1
