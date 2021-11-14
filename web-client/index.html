@@ -56,7 +56,7 @@
     .writeBtn {
         width: 45%;
         height: 3em;
-        font-size: 111%;
+        font-size: 100%;
         cursor: pointer;
     }
 </style>
@@ -69,8 +69,8 @@
     </div>
     <div id="textWrap">
         <div style="width: 100%; display: flex; flex-direction:row; justify-content:space-evenly;">
-            <button class="writeBtn" onclick="sendText()">续写 (alt+Q) 不要点太快。点了之后，等续写的内容出来了，再点</button>
-            <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E) 会清内容。在人工改写前文后，不要先点这个。先点【续写】</button>
+            <button class="writeBtn" onclick="sendText()">续写 (alt+Q) 点击后，必须等内容出来，再继续点，否则内容全部混在一起</button>
+            <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E) 如果手工修改了下面的内容，不能点这个，应该点【续写】</button>
         </div>
         <br>
         <textarea id="textArea">这是</textarea>
