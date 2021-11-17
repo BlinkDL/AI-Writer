@@ -1,18 +1,16 @@
 # AI-Writer
-用魔改 GPT 生成网文。Tuned GPT for novel generation. 现已支持 N卡 A卡 I卡 GPU 加速。
+AI 写小说，支持 N/A/I卡 GPU 加速。采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM
 
 1. 先看下面的【安装方法】。下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录。
 2. 运行 python run.py（或双击run.bat），建议在cmd运行，看出错提示。有问题请看【安装方法】和【常见问题】。
 
-***也支持纯 CPU 快速生成，每秒生成 10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。***
+也支持纯 CPU 快速生成，每秒 1-10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。
 
 最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
 
 ![Screenshot](server.jpg)
 
 注意：模型的训练数据全部来自网文，缺乏生活常识。***生成的文字仅供娱乐。请遵守法律法规。***
-
-***采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM***
 
 同时使用了特殊采样方法，改善小模型的生成质量（介绍见 https://zhuanlan.zhihu.com/p/394766831 ）。
 
