@@ -41,6 +41,12 @@ Mac：目前只能CPU版。和【WindowsCPU版】相同。某些Mac需要用pip3
 7. 写作原理 --> 每次分析最后的512个字，得到下一个字的概率分布（xx%概率是x字，等等），根据概率写一个字。这样一个个字写下去。
 8. ctx_len是什么意思 --> 模型的记忆长度，就是每次只看最后的多少个字。越大效果越好也越慢。目前最大512。
 ```
+训练后怎么运行：
+```
+1. 默认 RWKV-LM 训练的模型很小，所以，需要修改 AI-writer 的 run.py，设置 ctx_len n_layer n_head 和 RWKV-LM 的 train.py 一致。还有 WORD_NAME（json词表） MODEL_NAME。
+2. 在 run.py 的 UNKNOWN_CHAR，将 \ue083 改成词表中一个不可能在正常文字出现的\uxxxx乱码，或某个最罕见的字（字不需要\符号）。意思是，如果看见不在词表里面的字，就用 UNKNOWN_CHAR 代表。
+3. 如果用 server.py，也同样修改。
+```
 
 新玄幻模型效果：
 
