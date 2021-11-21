@@ -52,7 +52,7 @@ Mac：目前只能CPU版。和【WindowsCPU版】相同。某些Mac需要用pip3
 
 ![Screenshot](AI-Writer.jpg)
 
-言情模型效果：
+言情模型效果【黄字是用户输入的开头，后面是模型续写】：
 
 ![Screenshot](AI-writer-yq.png)
 
