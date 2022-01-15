@@ -190,7 +190,7 @@ def NeuralWorker(queueZ, queueX):
         sess_options.graph_optimization_level = rt.GraphOptimizationLevel.ORT_ENABLE_ALL
         sess_options.execution_mode = rt.ExecutionMode.ORT_SEQUENTIAL
         sess_options.enable_mem_pattern = False
-        rt_session = rt.InferenceSession(MODEL_NAME + '.onnx', sess_options=sess_options)
+        rt_session = rt.InferenceSession(MODEL_NAME + '.onnx', sess_options=sess_options, providers=['DmlExecutionProvider'])
         rt_session.set_providers(['DmlExecutionProvider'])
     else:
         model = GPT(GPTConfig(vocab_size, ctx_len, n_layer=n_layer, n_head=n_head, n_embd=n_embd, n_attn=n_attn, n_ffn=n_ffn))
