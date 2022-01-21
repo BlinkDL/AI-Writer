@@ -27,19 +27,19 @@ print('\n声明：模型的训练数据全部来自网文，缺乏生活常识�
 
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/wangwen-2021-12-11' # 模型名
-WORD_NAME = 'model/wangwen-2021-12-11' # 这个也修改
+MODEL_NAME = 'model/wangwen-2022-01-09' # 模型名
+WORD_NAME = 'model/wangwen-2022-01-09' # 这个也修改
 
 NUM_OF_RUNS = 9999 # 写多少遍
 LENGTH_OF_EACH = 200 # 每次写多少字
 
-min_p_ratio = 0.02 # 这个的范围是 0 到 1。越大，生成效果越规矩。越小，变化越多。自己试试 0 和 0.1 和 1.0 的效果就知道了
+top_p = 0.8 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
+top_p_newline = 0.9
 
+# 开头非常重要。开头需创造剧情点。开头文笔越好，续写就越好。开头乱写，续写也乱写。
 # 开头这样输入：
-# context = "我"
-# context = "他"
-# context = "她"
 # context = "魔法"
+# context = "“区区"
 # context = "三体舰队"
 context = "这是一颗"
 # context = "众人一惊，没想到这林黛玉的剑法竟如此精妙，只见在那剑影下，剑尖朝着伏地魔的脖子探去，眼见避无可避，伏地魔情急，大喊"
@@ -148,9 +148,9 @@ for run in range(NUM_OF_RUNS):
         pos = -1 if real_len >= ctx_len else real_len - 1
 
         if train_dataset.itos[int(x[real_len-1])] == '\n':
-            char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=0.995)
+            char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=top_p_newline)
         else:
-            char = src.utils.sample_logits(out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio)
+            char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=top_p)
     
         x = np.append(x, char)
         real_len += 1
