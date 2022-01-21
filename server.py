@@ -19,10 +19,11 @@ PORT_NUM = 8266
 
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/xuanhuan-2021-10-26' # 模型名，例如 yanqing-2021-10-29 xuanhuan-2021-10-26
-WORD_NAME = 'model/xuanhuan-2021-10-26' # 这个也修改
+MODEL_NAME = 'model/wangwen-2022-01-09' # 模型名，例如 yanqing-2021-10-29 xuanhuan-2021-10-26
+WORD_NAME = 'model/wangwen-2022-01-09' # 这个也修改
 
-min_p_ratio = 0.02  # 这个的范围是 0 到 1。越大，生成效果越规矩。越小，变化越多。自己试试 0 和 0.1 和 1.0 的效果就知道了
+top_p = 0.8 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
+top_p_newline = 0.9
 
 LENGTH_OF_EACH = 20  # 每次写多少字
 
@@ -270,11 +271,9 @@ def NeuralWorker(queueZ, queueX):
                 pos = -1 if real_len >= ctx_len else real_len - 1
 
                 if train_dataset.itos[int(x[real_len-1])] == '\n':
-                    char = src.utils.sample_logits(
-                        out, pos, temperature=1.0, top_p=0.995)
+                    char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=top_p_newline)
                 else:
-                    char = src.utils.sample_logits(
-                        out, pos, temperature=1.0, min_p_pow=2.0, min_p_ratio=min_p_ratio)
+                    char = src.utils.sample_logits(out, pos, temperature=1.0, top_p=top_p)
 
                 x = np.append(x, char)
                 real_len += 1
