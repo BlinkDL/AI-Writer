@@ -27,13 +27,13 @@ print('\n声明：模型的训练数据全部来自网文，缺乏生活常识�
 
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/wangwen-2022-01-09' # 模型名
-WORD_NAME = 'model/wangwen-2022-01-09' # 这个也修改
+MODEL_NAME = 'model/wangwen-2022-02-15' # 模型名
+WORD_NAME = 'model/wangwen-2022-02-15' # 这个也修改
 
-NUM_OF_RUNS = 9999 # 写多少遍
-LENGTH_OF_EACH = 200 # 每次写多少字
+NUM_OF_RUNS = 999 # 写多少遍
+LENGTH_OF_EACH = 512 # 每次写多少字
 
-top_p = 0.8 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
+top_p = 0.75 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
 top_p_newline = 0.9
 
 # 开头非常重要。开头需创造剧情点。开头文笔越好，续写就越好。开头乱写，续写也乱写。
@@ -93,7 +93,6 @@ else:
         time_w = m2[prefix + 'time_w']
         time_alpha = m2[prefix + 'time_alpha']
         time_beta = m2[prefix + 'time_beta']
-        mask = m2[prefix + 'mask']
         
         TT = ctx_len
         T = ctx_len
@@ -102,13 +101,11 @@ else:
         w = w[:, :-TT].reshape(-1, TT, 2 * TT - 1)
         w = w[:, :, TT-1:]
         w = w[:, :T, :T] * time_alpha[:, :, :T] * time_beta[:, :T, :]
-        w = w.masked_fill(mask[:T, :T] == 0, 0)    
         
         m2[prefix + 'time_ww'] = w
         del m2[prefix + 'time_w']
         del m2[prefix + 'time_alpha']
         del m2[prefix + 'time_beta']
-        del m2[prefix + 'mask']    
     if RUN_DEVICE == 'gpu':
         model = model.cuda()
     model.load_state_dict(m2)
@@ -143,7 +140,7 @@ for run in range(NUM_OF_RUNS):
                 xxx = torch.tensor(x[-ctx_len:], dtype=torch.long)[None,...]
                 if RUN_DEVICE == 'gpu':
                     xxx = xxx.cuda()
-                out, _ = model(xxx)            
+                out, _ = model(xxx)
             out[:, :, UNKNOWN_CHAR] = -float('Inf')
         pos = -1 if real_len >= ctx_len else real_len - 1
 
@@ -155,7 +152,7 @@ for run in range(NUM_OF_RUNS):
         x = np.append(x, char)
         real_len += 1
 
-        if i % 10 == 9 or i == LENGTH_OF_EACH-1 or i < 10 or RUN_DEVICE != 'gpu':
+        if i % 2 == 1 or i == LENGTH_OF_EACH-1 or i < 10 or RUN_DEVICE != 'gpu':
             completion = ''.join([train_dataset.itos[int(i)] for i in x[print_begin:real_len]])
             print(completion.replace('\n', '\n  '), end = '', flush=True)
             print_begin = real_len

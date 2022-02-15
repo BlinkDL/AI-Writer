@@ -131,6 +131,10 @@ class GPT(nn.Module):
         self.time_out = nn.Parameter(torch.ones(1, config.ctx_len, 1))
         self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
 
+        self.head_q = nn.Linear(config.n_embd, 256)
+        self.head_k = nn.Linear(config.n_embd, 256)
+        self.register_buffer("copy_mask", torch.tril(torch.ones(config.ctx_len, config.ctx_len)))
+
         self.ctx_len = config.ctx_len
 
         logger.info("number of parameters: %e", sum(p.numel()
@@ -148,8 +152,13 @@ class GPT(nn.Module):
         x = self.blocks(x)
 
         x = self.ln_f(x)
+        q = self.head_q(x)[:,:T,:]
+        k = self.head_k(x)[:,:T,:]
+        c = (q @ k.transpose(-2, -1)) * (1.0 / 256)
+        c = c.masked_fill(self.copy_mask[:T,:T] == 0, 0)
+        c = c @ F.one_hot(idx, num_classes = self.config.vocab_size).float()       
         x = x * self.time_out[:, :T, :]
-        x = self.head(x)
+        x = self.head(x) + c
 
         loss = None
         if targets is not None:

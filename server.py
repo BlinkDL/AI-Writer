@@ -19,10 +19,10 @@ PORT_NUM = 8266
 
 RUN_DEVICE = 'gpu' # gpu 或 dml 或 cpu
 
-MODEL_NAME = 'model/wangwen-2022-01-09' # 模型名，例如 yanqing-2021-10-29 xuanhuan-2021-10-26
-WORD_NAME = 'model/wangwen-2022-01-09' # 这个也修改
+MODEL_NAME = 'model/wangwen-2022-02-15' # 模型名
+WORD_NAME = 'model/wangwen-2022-02-15' # 这个也修改
 
-top_p = 0.8 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
+top_p = 0.75 # 这个的范围是 0 到 1。越大，变化越多。越小，生成效果越规矩。自己试试 0 和 0.5 和 1.0 的效果就知道了
 top_p_newline = 0.9
 
 LENGTH_OF_EACH = 20  # 每次写多少字
@@ -170,7 +170,7 @@ def NeuralWorker(queueZ, queueX):
     # src.utils.set_seed(42) # 是否固定随机数（固定后每次运行的生成结果都一样）
 
     print('\nAI人工智障写作 https://github.com/BlinkDL/AI-Writer')
-    print('请关注我的知乎 https://zhuanlan.zhihu.com/p/394766831')
+    print('请关注我的知乎 https://zhuanlan.zhihu.com/p/423646620')
     print('\n声明：模型的训练数据全部来自网文，缺乏生活常识。生成的文字仅供娱乐。请遵守法律法规。')
 
     print(f'\nLoading model for {RUN_DEVICE}...', end=' ')
@@ -201,7 +201,6 @@ def NeuralWorker(queueZ, queueX):
             time_w = m2[prefix + 'time_w']
             time_alpha = m2[prefix + 'time_alpha']
             time_beta = m2[prefix + 'time_beta']
-            mask = m2[prefix + 'mask']
             
             TT = ctx_len
             T = ctx_len
@@ -210,13 +209,11 @@ def NeuralWorker(queueZ, queueX):
             w = w[:, :-TT].reshape(-1, TT, 2 * TT - 1)
             w = w[:, :, TT-1:]
             w = w[:, :T, :T] * time_alpha[:, :, :T] * time_beta[:, :T, :]
-            w = w.masked_fill(mask[:T, :T] == 0, 0)    
             
             m2[prefix + 'time_ww'] = w
             del m2[prefix + 'time_w']
             del m2[prefix + 'time_alpha']
             del m2[prefix + 'time_beta']
-            del m2[prefix + 'mask']    
         if RUN_DEVICE == 'gpu':
             model = model.cuda()
         model.load_state_dict(m2)
@@ -265,7 +262,7 @@ def NeuralWorker(queueZ, queueX):
                         xxx = torch.tensor(x[-ctx_len:], dtype=torch.long)[None,...]
                         if RUN_DEVICE == 'gpu':
                             xxx = xxx.cuda()
-                        out, _ = model(xxx)            
+                        out, _ = model(xxx)
                 out[:, :, UNKNOWN_CHAR] = -float('Inf')
 
                 pos = -1 if real_len >= ctx_len else real_len - 1
