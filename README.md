@@ -93,6 +93,9 @@ https://zhuanlan.zhihu.com/p/435972716
   “你之前在黑市遇到的那
 ```
 
+如果觉得好用，欢迎支持项目：
+![Screenshot](alipay.png)
+
 旧模型效果：
 
 ![Screenshot](AI-Writer.gif)
