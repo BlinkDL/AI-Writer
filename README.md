@@ -56,6 +56,10 @@ https://zhuanlan.zhihu.com/p/435972716
 3. 如果用 server.py，也同样修改。
 ```
 
+如果觉得好用，欢迎支持项目：
+
+![Screenshot](alipay.png)
+
 新玄幻模型效果：
 
 ![Screenshot](AI-Writer.jpg)
@@ -92,9 +96,6 @@ https://zhuanlan.zhihu.com/p/435972716
   陆泽顿了顿，又是轻笑：“虽然这个身份不值得一提，但是不管怎么说，也比我在这里要好。”
   “你之前在黑市遇到的那
 ```
-
-如果觉得好用，欢迎支持项目：
-![Screenshot](alipay.png)
 
 旧模型效果：
 
