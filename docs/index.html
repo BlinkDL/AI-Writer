@@ -439,7 +439,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写...'
+            document.getElementById("loading").innerHTML = '正在续写...（如果卡，请刷新页面）'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -517,7 +517,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = '正在续写...'
+            document.getElementById("loading").innerHTML = '正在续写...（如果卡，请刷新页面）'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
