@@ -75,8 +75,8 @@
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 75%;">
         <p><a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">RWKV-v2-RNN Playground (Language Model)</a> - JS inference in your browser - 26M params model (L6-D512) trained on PG-19 dataset</p>
-        <p>Using tf.js wasm backend - buggy and often OOM. Refresh page if it crashes.</p>
-        <p style="color:blue; font-weight: bold;">NOTE: The PG-19 dataset has a fixed line width of 72, and the model will insert line breaks. Use the same format in your prompt.</p>
+        <p>Using tf.js wasm backend (buggy and often crashes). <span style="color:blue;  font-weight: bold;">Refresh page if it freezes</span>.</p>
+        <p style="color:blue; font-weight: bold;">NOTE: The PG-19 dataset has a line width of 72, thus the model will insert line breaks. Use the same format for your prompt.</p>
     </div>
     <div id="textWrap">
         <div style="height:3em">
@@ -85,7 +85,7 @@
             </div>
             <div id="writeBtns" style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">Continue story (alt+Q)</button>
-                <button class="writeBtn" onclick="rewriteText()">Alternative continuation (alt+E)</button>
+                <button class="writeBtn" onclick="rewriteText()">Alternative (alt+E)</button>
             </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
@@ -430,7 +430,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = 'Generating...'
+            document.getElementById("loading").innerHTML = 'Generating... (refresh page if freezed)'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -509,7 +509,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = 'Generating...'
+            document.getElementById("loading").innerHTML = 'Generating... (refresh page if freezed)'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
