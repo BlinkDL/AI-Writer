@@ -73,11 +73,11 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 75%;">
-        <p>AI人工智障写作 <a href="https://github.com/BlinkDL/AI-Writer"
-                target="_blank">https://github.com/BlinkDL/AI-Writer</a> 请关注我的知乎 <a
-                href="https://zhuanlan.zhihu.com/p/423646620" target="_blank">https://zhuanlan.zhihu.com/p/423646620</a>
+        <p>AI人工智障写作 <a href="https://zhuanlan.zhihu.com/p/423646620" target="_blank">【欢迎关注我的知乎】</a>
+            如果喜欢请看<a href="https://withablink.taobao.com/" target="_blank">【我们淘宝店有优质的高显色护眼LED台灯】</a>
         </p>
-        <p style="color:darkred">请经常备份写作内容。这是简化的快速模型，效果弱于 Github 版，电脑是智障，仅供娱乐，请遵守法律法规。</p>
+        <p style="color:darkred">请经常备份写作内容。这是简化的快速模型，效果弱于 <a href="https://github.com/BlinkDL/AI-Writer"
+                target="_blank">Github 版</a>。电脑是智障，仅供娱乐，请遵守法律法规。</p>
         <p></p>
     </div>
     <div id="textWrap">
@@ -93,6 +93,10 @@
             <textarea id="textArea" style="flex: 2 1 0">这是一颗</textarea>
             <textarea id="logArea" style="flex: 1 1 0">请在左边写作。右边这里是暂存区域，会纪录每次的续写内容，供你参考。</textarea>
         </div>
+    </div>
+    <div style="margin:0 auto; text-align:center;">
+        <div>如果喜欢，请支持项目 😃 未来可以训练更强的模型（支付宝名：黄狸猫）。欢迎分享项目，欢迎合作。</div>
+        <img src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
     </div>
 </body>
 <script>
@@ -561,29 +565,43 @@
 
     //=================================================================================================
 
+    var textArea = document.getElementById("textArea")
+    var logArea = document.getElementById("logArea")
+
     let txt_stored = localStorage.getItem('txt_stored');
     if (txt_stored)
-        document.getElementById("textArea").value = txt_stored
+        textArea.value = txt_stored
+
+    let log_stored = localStorage.getItem('log_stored');
+    if (log_stored)
+        logArea.value = log_stored
 
     let lastGeneratePosition = -1
+    textArea.scrollTop = textArea.scrollHeight;
+    logArea.scrollTop = logArea.scrollHeight;
 
     function addText(d) {
-        var textArea = document.getElementById("textArea")
         textArea.value += d
         textArea.scrollTop = textArea.scrollHeight;
 
-        var logArea = document.getElementById("logArea")
         logArea.value += d
         logArea.scrollTop = logArea.scrollHeight;
 
-        localStorage.setItem('txt_stored', document.getElementById("textArea").value);
+        localStorage.setItem('txt_stored', textArea.value);
+        localStorage.setItem('log_stored', logArea.value);
     }
 
-    document.getElementById("textArea").onchange = function (e) {
-        localStorage.setItem('txt_stored', document.getElementById("textArea").value);
+    textArea.onchange = function (e) {
+        localStorage.setItem('txt_stored', textArea.value);
     }
-    document.getElementById("textArea").oninput = function (e) {
-        localStorage.setItem('txt_stored', document.getElementById("textArea").value);
+    textArea.oninput = function (e) {
+        localStorage.setItem('txt_stored', textArea.value);
+    }
+    logArea.onchange = function (e) {
+        localStorage.setItem('log_stored', logArea.value);
+    }
+    logArea.oninput = function (e) {
+        localStorage.setItem('log_stored', logArea.value);
     }
 
     function sendText() {
