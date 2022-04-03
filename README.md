@@ -1,7 +1,7 @@
 # AI-Writer
 AI 写小说，支持 N/A/I卡 GPU 加速。采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM 。
 
-#### 小白用户请用网页版（弱一些，但是手机点开就能用）：https://blinkdl.github.io/AI-Writer/
+### 小白用户请用网页版（弱一些，但是手机点开就能用）：https://blinkdl.github.io/AI-Writer/
 
 ***另外请大家看，本页面的最后，我会解释模型的原理，不懂电脑也能懂。***
 
