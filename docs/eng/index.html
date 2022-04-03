@@ -75,7 +75,6 @@
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 75%;">
         <p><a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">RWKV-v2-RNN Playground (Language Model)</a> - JS inference in your browser - 26M params model (L6-D512) trained on PG-19 dataset</p>
-        <p>Using tf.js wasm backend (buggy and often crashes). <span style="color:blue;  font-weight: bold;">Refresh page if it freezes</span>.</p>
         <p style="color:blue; font-weight: bold;">NOTE: The PG-19 dataset has a line width of 72, thus the model will insert line breaks. Use the same format for your prompt.</p>
     </div>
     <div id="textWrap">
@@ -443,7 +442,8 @@
                     out = loadStat(ctxStr)
                 } else {
                     out = run(ctx)
-                    saveStat(out, ctxStr)
+                    if (iter == WRITE_EACH_LENGTH - 1)
+                        saveStat(out, ctxStr)
                 }
 
                 var indexed = Array.from(Array(out.length).keys()).sort((a, b) => out[a] > out[b] ? -1 : (out[b] > out[a]) | 0)
@@ -495,7 +495,8 @@
                 } else {
                     // console.log('ANALYZE', ctxStr)
                     var out = run(ccc)
-                    saveStat(out, ctxStr)
+                    if (iter == ANALYZE_LENGTH - 1)
+                        saveStat(out, ctxStr)
                 }
                 document.getElementById("loading").innerHTML = 'Analyzing ' + Math.round(iter / ANALYZE_LENGTH * 100) + "% ... (this can be parallelized for 100x speedup but I haven't coded it yet)"
                 asyncAnalyze(iter + 1, callback);
