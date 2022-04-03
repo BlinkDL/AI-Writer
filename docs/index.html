@@ -312,13 +312,15 @@
             xxx[name] = tf.zeros([n_embd])
         }
         var x = xx.mul(w.time_mix).add(xxx[name].mul(const_1.sub(w.time_mix)))
-        xxx[name] = xx
+        xxx[name].dispose()
+        xxx[name] = tf.keep(xx)
         x = x.expandDims(1)
 
         var r = w.receptance.weight.matMul(x).sigmoid()
         var k = w.key.weight.matMul(x).relu().square()
         var kv = w.value.weight.matMul(k)
         x = r.mul(kv).squeeze()
+
         return x
     }
 
@@ -329,7 +331,8 @@
             bbb[name] = tf.zeros([n_embd])
         }
         var x = xx.mul(w.time_mix).add(xxx[name].mul(const_1.sub(w.time_mix)))
-        xxx[name] = xx
+        xxx[name].dispose()
+        xxx[name] = tf.keep(xx)
         x = x.expandDims(1)
 
         var r = w.receptance.weight.matMul(x).sigmoid().squeeze()
@@ -339,12 +342,17 @@
 
         var a = aaa[name].add(w.time_first.mul(kv))
         var b = bbb[name].add(w.time_first.mul(k))
-        aaa[name] = w.time_decay.mul(aaa[name]).add(kv)
-        bbb[name] = w.time_decay.mul(bbb[name]).add(k)
+        var aa = aaa[name].clone()
+        var bb = bbb[name].clone()
+        aaa[name].dispose()
+        bbb[name].dispose()
+        aaa[name] = tf.keep(w.time_decay.mul(aa).add(kv))
+        bbb[name] = tf.keep(w.time_decay.mul(bb).add(k))
 
         var rwkv = r.mul(a).div(b.add(1e-16)).expandDims(1)
-        rwkv = w.output.weight.matMul(rwkv)
-        return rwkv.squeeze()
+        rwkv = w.output.weight.matMul(rwkv).squeeze()
+
+        return rwkv
     }
 
     function clearStat() {
@@ -359,18 +367,19 @@
         buf.out = out.slice()
         buf.xxx = {}
         for (var x in xxx) {
-            buf.xxx[x] = xxx[x].clone()
+            buf.xxx[x] = tf.keep(xxx[x].clone())
         }
         buf.aaa = {}
         for (var x in aaa) {
-            buf.aaa[x] = aaa[x].clone()
+            buf.aaa[x] = tf.keep(aaa[x].clone())
         }
         buf.bbb = {}
         for (var x in bbb) {
-            buf.bbb[x] = bbb[x].clone()
+            buf.bbb[x] = tf.keep(bbb[x].clone())
         }
-        buf.hhh = hhh.clone()
+        buf.hhh = tf.keep(hhh.clone())
     }
+
     function loadStat(name) {
         var buf = ctxBuf[name]
         for (var x in buf.xxx) {
@@ -388,50 +397,56 @@
     }
 
     function run(ctx) {
+        var x = tf.tidy(() => {
+            var ctxStr = ''
+            for (var s of ctx)
+                ctxStr += itos[s]
+            ctxNow = ctxStr
+            // console.log('run', ctxStr)
 
-        var ctxStr = ''
-        for (var s of ctx)
-            ctxStr += itos[s]
-        ctxNow = ctxStr
-        // console.log('run', ctxStr)
+            var x = gParam.emb.weight.slice(ctx[ctx.length - 1], 1).squeeze()
 
-        var x = gParam.emb.weight.slice(ctx[ctx.length - 1], 1).squeeze()
+            x = LayerNorm(x, gParam.blocks[0].ln1)
+            x = x.add(FF(x, gParam.blocks[0].ffnPre, '0.ffnPre'))
+            x = LayerNorm(x, gParam.blocks[0].ln2)
+            x = x.add(FF(x, gParam.blocks[0].ffn, '0.ffn'))
 
-        x = LayerNorm(x, gParam.blocks[0].ln1)
-        x = x.add(FF(x, gParam.blocks[0].ffnPre, '0.ffnPre'))
-        x = LayerNorm(x, gParam.blocks[0].ln2)
-        x = x.add(FF(x, gParam.blocks[0].ffn, '0.ffn'))
+            for (var i = 1; i < 6; i++) {
+                x = LayerNorm(x, gParam.blocks[i].ln1)
+                x = x.add(SA(x, gParam.blocks[i].att, i + '.att'))
+                x = LayerNorm(x, gParam.blocks[i].ln2)
+                x = x.add(FF(x, gParam.blocks[i].ffn, i + '.ffn'))
+            }
+            x = LayerNorm(x, gParam.ln_out)
 
-        for (var i = 1; i < 6; i++) {
-            x = LayerNorm(x, gParam.blocks[i].ln1)
-            x = x.add(SA(x, gParam.blocks[i].att, i + '.att'))
-            x = LayerNorm(x, gParam.blocks[i].ln2)
-            x = x.add(FF(x, gParam.blocks[i].ffn, i + '.ffn'))
-        }
-        x = LayerNorm(x, gParam.ln_out)
+            x = x.expandDims(1)
+            var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
 
-        x = x.expandDims(1)
-        var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
-        if (hhh === null) {
-            hhh = hk
-        } else {
-            hhh = hhh.concat(hk)
-        }
-        if (hhh.shape[0] > ctx_len) {
-            hhh = hhh.slice(hhh.shape[0] - ctx_len, -1)
-        }
+            if (hhh === null) {
+                hhh = tf.keep(hk)
+            } else {
+                var hh = hhh.clone()
+                hhh.dispose()
+                hhh = tf.keep(hh.concat(hk))
+                if (hhh.shape[0] > ctx_len) {
+                    hhh = tf.keep(hh.slice(hh.shape[0] - ctx_len, -1))
+                }
+            }
 
-        var q = gParam.head_q.weight.matMul(x)
-        var c = hhh.matMul(q).div(256).dataSync()
+            var q = gParam.head_q.weight.matMul(x)
+            var c = hhh.matMul(q).div(256).dataSync()
 
-        x = gParam.head.weight.matMul(x)
-        x = x.dataSync()
+            x = gParam.head.weight.matMul(x)
+            x = x.dataSync()
 
-        for (var i = 0; i < c.length; i++)
-            x[ctx[i]] += c[i]
+            for (var i = 0; i < c.length; i++)
+                x[ctx[i]] += c[i]
 
+            return x
+        })
         // console.log(x)
         // console.log(c)
+        // console.log(tf.memory())
         return x
     }
 
