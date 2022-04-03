@@ -112,6 +112,9 @@
     const ctx_len = 768
     const vocab_size = 8849
 
+    var WRITE_EACH_LENGTH = 50
+    var TOP_P = 0.7
+
     var weightName = [
         'emb.weight',
         'blocks.0.ln1.weight',
@@ -432,14 +435,13 @@
         return x
     }
 
-    var WRITE_EACH_LENGTH = 50
     var ctx = [1]
     var ctxBuf = {}
     var ctxNow = ''
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写...（如果卡，请刷新页面）'
+            document.getElementById("loading").innerHTML = '正在续写...'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -452,7 +454,8 @@
                     out = loadStat(ctxStr)
                 } else {
                     out = run(ctx)
-                    saveStat(out, ctxStr)
+                    if (iter == WRITE_EACH_LENGTH - 1)
+                        saveStat(out, ctxStr)
                 }
 
                 var indexed = Array.from(Array(out.length).keys()).sort((a, b) => out[a] > out[b] ? -1 : (out[b] > out[a]) | 0)
@@ -464,7 +467,7 @@
                     out[i] = Math.exp(out[i])
                     sum_exp += out[i]
                 }
-                var ran = Math.random() * 0.7
+                var ran = Math.random() * TOP_P
                 var i = 0
                 while (true) {
                     // console.log(ran, i, out[indexed[i]] / sum_exp)
@@ -503,7 +506,8 @@
                 } else {
                     // console.log('ANALYZE', ctxStr)
                     var out = run(ccc)
-                    saveStat(out, ctxStr)
+                    if (iter == ANALYZE_LENGTH - 1)
+                        saveStat(out, ctxStr)
                 }
                 document.getElementById("loading").innerHTML = '正在分析内容 ' + Math.round(iter / ANALYZE_LENGTH * 100) + '% ...（尚未优化，以后会提速10倍）'
                 asyncAnalyze(iter + 1, callback);
@@ -517,7 +521,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = '正在续写...（如果卡，请刷新页面）'
+            document.getElementById("loading").innerHTML = '正在续写...'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
