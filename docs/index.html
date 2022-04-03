@@ -67,7 +67,7 @@
 
     .writeBtn {
         width: 45%;
-        height: 3em;
+        height: 2em;
         cursor: pointer;
     }
 </style>
@@ -81,14 +81,16 @@
                 有更强版本</a>。电脑是智障，仅供娱乐，请遵守法律法规。</p>
     </div>
     <div id="textWrap">
-        <div id="loading" style="color:blue; font-size: 150%; text-align: center; margin: 0.25em 0 0.4em 0;">
-            正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer"
-                target="_blank">Github</a> 外网，请找方法加速。读取完就会有续写按钮。
-        </div>
-        <div id="writeBtns"
-            style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
-            <button class="writeBtn" onclick="sendText()">续写 (alt+Q) 如果输入内容长，可能需要等几秒</button>
-            <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E) 如果手工修改了内容，请点左边续写</button>
+        <div style="height:2em">
+            <div id="loading" style="color:blue; font-size: 120%; text-align: center;">
+                正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer"
+                    target="_blank">Github</a> 外网，请找方法加速。读取完就会有续写按钮。
+            </div>
+            <div id="writeBtns"
+                style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
+                <button class="writeBtn" onclick="sendText()">续写 (alt+Q) 如果输入内容长，可能需要等几秒</button>
+                <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E) 如果手工修改了内容，请点左边续写</button>
+            </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
             <textarea id="textArea" style="flex: 2 1 0">这是</textarea>
