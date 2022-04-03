@@ -74,22 +74,26 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 75%;">
-        <p><a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">RWKV-v2-RNN Playground (Language Model)</a> - JS inference in your browser - 26M params model (L6-D512) trained on PG-19 dataset</p>
-        <p style="color:blue; font-weight: bold;">NOTE: The PG-19 dataset has a line width of 72, thus the model will insert line breaks. Use the same format for your prompt.</p>
+        <p><a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">RWKV-v2-RNN Playground (Language Model)</a> - JS
+            inference in your browser - 26M params model (L6-D512) trained on PG-19 dataset</p>
+        <p style="color:blue; font-weight: bold;">NOTE: The PG-19 dataset has a line width of 72, thus the model will
+            insert line breaks. Use the same format for your prompt.</p>
     </div>
     <div id="textWrap">
         <div style="height:3em">
             <div id="loading" style="color:blue; font-size: 100%;text-align: center;">
                 Loading... <span id="loadprog"></span>
             </div>
-            <div id="writeBtns" style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
+            <div id="writeBtns"
+                style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">Continue story (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">Alternative (alt+E)</button>
             </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
             <textarea id="textArea" style="flex: 2 1 0">In the</textarea>
-            <textarea id="logArea" style="flex: 1 1 0">Write in the left textarea. Here is the log of all generation results.</textarea>
+            <textarea id="logArea"
+                style="flex: 1 1 0">Write in the left textarea. Here is the log of all generation results.</textarea>
         </div>
     </div>
 </body>
@@ -302,13 +306,15 @@
             xxx[name] = tf.zeros([n_embd])
         }
         var x = xx.mul(w.time_mix).add(xxx[name].mul(const_1.sub(w.time_mix)))
-        xxx[name] = xx
+        xxx[name].dispose()
+        xxx[name] = tf.keep(xx)
         x = x.expandDims(1)
 
         var r = w.receptance.weight.matMul(x).sigmoid()
         var k = w.key.weight.matMul(x).relu().square()
         var kv = w.value.weight.matMul(k)
         x = r.mul(kv).squeeze()
+
         return x
     }
 
@@ -319,7 +325,8 @@
             bbb[name] = tf.zeros([n_embd])
         }
         var x = xx.mul(w.time_mix).add(xxx[name].mul(const_1.sub(w.time_mix)))
-        xxx[name] = xx
+        xxx[name].dispose()
+        xxx[name] = tf.keep(xx)
         x = x.expandDims(1)
 
         var r = w.receptance.weight.matMul(x).sigmoid().squeeze()
@@ -329,12 +336,17 @@
 
         var a = aaa[name].add(w.time_first.mul(kv))
         var b = bbb[name].add(w.time_first.mul(k))
-        aaa[name] = w.time_decay.mul(aaa[name]).add(kv)
-        bbb[name] = w.time_decay.mul(bbb[name]).add(k)
+        var aa = aaa[name].clone()
+        var bb = bbb[name].clone()
+        aaa[name].dispose()
+        bbb[name].dispose()
+        aaa[name] = tf.keep(w.time_decay.mul(aa).add(kv))
+        bbb[name] = tf.keep(w.time_decay.mul(bb).add(k))
 
         var rwkv = r.mul(a).div(b.add(1e-16)).expandDims(1)
-        rwkv = w.output.weight.matMul(rwkv)
-        return rwkv.squeeze()
+        rwkv = w.output.weight.matMul(rwkv).squeeze()
+
+        return rwkv
     }
 
     function clearStat() {
@@ -350,17 +362,17 @@
         buf.out = out.slice()
         buf.xxx = {}
         for (var x in xxx) {
-            buf.xxx[x] = xxx[x].clone()
+            buf.xxx[x] = tf.keep(xxx[x].clone())
         }
         buf.aaa = {}
         for (var x in aaa) {
-            buf.aaa[x] = aaa[x].clone()
+            buf.aaa[x] = tf.keep(aaa[x].clone())
         }
         buf.bbb = {}
         for (var x in bbb) {
-            buf.bbb[x] = bbb[x].clone()
+            buf.bbb[x] = tf.keep(bbb[x].clone())
         }
-        buf.hhh = hhh.clone()
+        buf.hhh = tf.keep(hhh.clone())
     }
 
     function loadStat(name) {
@@ -380,45 +392,51 @@
     }
 
     function run(ctx) {
+        var x = tf.tidy(() => {
+            var ctxStr = ''
+            for (var s of ctx)
+                ctxStr += itos[s]
+            ctxNow = ctxStr
+            // console.log('run', ctxStr)
 
-        var ctxStr = ''
-        for (var s of ctx)
-            ctxStr += itos[s]
-        ctxNow = ctxStr
-        // console.log('run', ctxStr)
+            var x = gParam.emb.weight.slice(ctx[ctx.length - 1], 1).squeeze()
 
-        var x = gParam.emb.weight.slice(ctx[ctx.length - 1], 1).squeeze()
+            for (var i = 0; i < 6; i++) {
+                x = LayerNorm(x, gParam.blocks[i].ln1)
+                x = x.add(SA(x, gParam.blocks[i].att, i + '.att'))
+                x = LayerNorm(x, gParam.blocks[i].ln2)
+                x = x.add(FF(x, gParam.blocks[i].ffn, i + '.ffn'))
+            }
+            x = LayerNorm(x, gParam.ln_out)
 
-        for (var i = 0; i < 6; i++) {
-            x = LayerNorm(x, gParam.blocks[i].ln1)
-            x = x.add(SA(x, gParam.blocks[i].att, i + '.att'))
-            x = LayerNorm(x, gParam.blocks[i].ln2)
-            x = x.add(FF(x, gParam.blocks[i].ffn, i + '.ffn'))
-        }
-        x = LayerNorm(x, gParam.ln_out)
+            x = x.expandDims(1)
+            var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
 
-        x = x.expandDims(1)
-        var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
-        if (hhh === null) {
-            hhh = hk
-        } else {
-            hhh = hhh.concat(hk)
-        }
-        if (hhh.shape[0] > ctx_len) {
-            hhh = hhh.slice(hhh.shape[0] - ctx_len, -1)
-        }
+            if (hhh === null) {
+                hhh = tf.keep(hk)
+            } else {
+                var hh = hhh.clone()
+                hhh.dispose()
+                hhh = tf.keep(hh.concat(hk))
+                if (hhh.shape[0] > ctx_len) {
+                    hhh = tf.keep(hh.slice(hh.shape[0] - ctx_len, -1))
+                }
+            }
 
-        var q = gParam.head_q.weight.matMul(x)
-        var c = hhh.matMul(q).div(256).dataSync()
+            var q = gParam.head_q.weight.matMul(x)
+            var c = hhh.matMul(q).div(256).dataSync()
 
-        x = gParam.head.weight.matMul(x)
-        x = x.dataSync()
+            x = gParam.head.weight.matMul(x)
+            x = x.dataSync()
 
-        for (var i = 0; i < c.length; i++)
-            x[ctx[i]] += c[i]
+            for (var i = 0; i < c.length; i++)
+                x[ctx[i]] += c[i]
 
+            return x
+        })
         // console.log(x)
         // console.log(c)
+        // console.log(tf.memory())
         return x
     }
 
@@ -429,9 +447,8 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = 'Generating... (refresh page if freezed)'
+            document.getElementById("loading").innerHTML = 'Generating...'
             setTimeout(() => {
-
                 var ctxStr = ''
                 for (var s of ctx)
                     ctxStr += itos[s]
@@ -466,7 +483,6 @@
                         break
                 }
                 var result = indexed[i]
-
 
                 addText(itos[result])
                 ctx.push(result)
@@ -510,7 +526,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = 'Generating... (refresh page if freezed)'
+            document.getElementById("loading").innerHTML = 'Generating...'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
