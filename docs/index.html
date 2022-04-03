@@ -543,9 +543,18 @@
             ctx = Array.prototype.map.call(context, x => {
                 if (x in stoi)
                     return stoi[x];
-                else
+                else {
                     return -1;
+                }
             })
+            var badindex = ctx.indexOf(-1)
+            if (badindex >= 0) {
+                document.getElementById("loading").innerHTML = '内容有不规范字符 [' + context[badindex] + ']，请使用简体和半角英文数字。'
+                setTimeout(() => {
+                    showBtn()
+                }, 1000)
+                return
+            }
 
             var ctxStr = ''
             for (var s of ctx)
