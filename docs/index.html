@@ -76,18 +76,14 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 80%;">
-        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175"
-                target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我的知乎，了解原理</a> 请经常备份内容 请用Chrome最快 这是简化模型，<a
-                href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 电脑是智障，仅供娱乐，请遵守法律法规</p>
+        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 请经常备份内容 请用Chrome最快 <a href="https://t.me/ai_writer" target="_blank">TG群</a> 这是简化模型，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 电脑是智障，仅供娱乐，请遵守法律法规</p>
     </div>
     <div id="textWrap">
         <div style="min-height:2em">
             <div id="loading" style="color:blue; font-size: 120%; text-align: center;">
-                正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer"
-                    target="_blank">Github 外网</a>，请找方法加速。读取完就会有续写按钮。
+                正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github 外网</a>，请找方法加速。读取完就会有续写按钮。
             </div>
-            <div id="writeBtns"
-                style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
+            <div id="writeBtns" style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">续写 (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
                 <select onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
@@ -111,24 +107,61 @@
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div>如果喜欢，请支持项目 😃（扫下面码）。欢迎分享、合作。欢迎看<a href="https://withablink.taobao.com/"
-                target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
+        <div>如果喜欢，请支持项目 😃（扫下面码）。欢迎分享、合作。欢迎看<a href="https://withablink.taobao.com/" target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
         <img src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
-        <div>请定期清空右边区域，以免拖慢速度。如果字体太小，可以放大网页。</div>
-        <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a
-                href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可以训练自己的语料</div>
-        <div><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
-                <option>随机度0</option>
-                <option>随机度0.3</option>
-                <option>随机度0.5</option>
-                <option>随机度0.7</option>
-                <option selected>(默认)随机度0.75</option>
-                <option>随机度0.8</option>
-                <option>随机度0.85</option>
-                <option>随机度0.9</option>
-                <option>随机度0.95</option>
-                <option>随机度1</option>
-            </select> 随机度越高，内容丰富但逻辑变差。如果每次写很长，建议提高随机度，避免陷入重复。</div>
+        <div style="line-height: 1.5;">
+            <div>请定期清空右边区域，以免拖慢速度。如果字体太小，可以放大网页。</div>
+            <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可以训练自己的语料。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
+            <div><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
+                    <option>随机度0</option>
+                    <option>随机度0.3</option>
+                    <option>随机度0.5</option>
+                    <option>随机度0.7</option>
+                    <option>随机度0.75</option>
+                    <option selected>(默认)随机度0.8</option>
+                    <option>随机度0.85</option>
+                    <option>随机度0.9</option>
+                    <option>随机度0.95</option>
+                    <option>随机度1</option>
+                </select> 随机度越高，内容丰富但逻辑变差。如果每次写很长，建议提高随机度，避免陷入重复。</div>
+        </div>
+        <div style="line-height: 2; text-align: left; margin:1em;">
+            FAQ：
+            <br>*) 是用什么训练？答：用pytorch训练，用tf.js部署。用了200G语料，80%是网文。这里是6层512嵌入的迷你模型。在Github有12层768嵌入的标准模型，效果更好。
+            <br>*) 欢迎大家支持项目，以炼更大的效果更好的模型（得炼几个月）。
+            <br>*) 可以写刘备吗？答：可以用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。
+            <pre style="line-height: 1.5;">
+
+模型原理（以Github的12层768嵌入模型为例）
+电脑的原理，是题海战术+笨鸟先飞。它把字变成很多数，然后，找这些数的数学（统计学）规律。
+
+电脑的学习目标：输入一堆字，预测下一个字。
+
+只要学会这个，就可以一个个字写下去。
+训练的小说有几万本，每次随机挑一段 512 个字输进去，让电脑猜下一个字，看是否能猜对。
+不断重复这个过程，不断考试。
+你可以自己玩这个游戏（遮住后文，猜下一个字），会发现，需要理解前文才能玩对。
+我的小模型，支持 8849 种字。每个字对应两组数，每组有 768 个数。
+
+例如："我" = 【0.123 -1.534 ...】，【-0.827 2.343 ...】，不妨称为【输入组】和【输出组】。
+大模型，每个字会对应几千几万个数。
+第一，编码。
+
+每个字根据它的【输入组】，变成 768 个数，每个数代表某种隐藏含义。
+举例，每个字的第A个数代表"好-坏"维度，第B个数代表"名词-非名词"维度，等等。
+实际找到的编码，不一定有容易描述的维度含义。
+
+因为具体的编码，是电脑自动去发现，无需人工干预。
+最初是随机编码。电脑会不断用【求导数】的方法计算，修改编码，改进预测结果。
+大致可以认为：如果电脑发现，把某个字的第某个数增加 0.001，可以改进预测结果，它就去做这个事。
+因为预测结果是否正确，是客观标准。所以它只要不断这里+0.001，那里-0.001，就慢慢接近目标。
+总之，输入 512 个字，会变成 512*768 = 393216 个数。
+
+第二，模型会把这 393216 个数经过一番运算（和另外几千万个数做运算，这几千万个数也会不断调整），最终得到 768 个数。这个过程是最有趣的，稍后也可以解释。
+
+第三，将 768 个数，与 8849 种字的【输出组】比较，计算和每个字的接近程度，就是输出这个字的概率。
+</pre>
+        </div>
     </div>
 </body>
 <script>
@@ -141,7 +174,7 @@
     const vocab_size = 8849
 
     var WRITE_EACH_LENGTH = 50
-    var TOP_P = 0.75
+    var TOP_P = 0.8
 
     var weightName = [
         'emb.weight',
@@ -389,6 +422,7 @@
         bbb = {}
         hhh = null
     }
+
     function saveStat(out, name) {
         ctxBuf[name] = {}
         var buf = ctxBuf[name]
@@ -485,7 +519,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...' + '<button onmousedown="gWriteShallStop=true">停止</button>'
+            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...' + '<button onmousedown="gWriteShallStop=true">【停止】</button>'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -543,6 +577,7 @@
     }
 
     var ANALYZE_LENGTH = 0
+
     function asyncAnalyze(iter = 1, callback) {
         if (iter < ANALYZE_LENGTH) {
             setTimeout(() => {
@@ -581,8 +616,7 @@
 
             if (rawCtx == '') {
                 context = '\n'
-            }
-            else {
+            } else {
                 var endsNewLine = false
                 var rr = rawCtx.split('\n')
                 if (rr[rr.length - 1].trim() == '')
