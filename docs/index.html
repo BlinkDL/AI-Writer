@@ -497,14 +497,16 @@
             x = x.expandDims(1)
             var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
 
+            var i_begin = 0
             if (hhh === null) {
                 hhh = tf.keep(hk)
             } else {
                 var hh = hhh.clone()
                 hhh.dispose()
-                hhh = tf.keep(hh.concat(hk))
-                if (hhh.shape[0] > ctx_len) {
-                    hhh = tf.keep(hh.slice(hh.shape[0] - ctx_len, -1))
+                if (hh.shape[0] >= ctx_len) {
+                    hhh = tf.keep(hh.slice(1, -1).concat(hk))
+                } else {
+                    hhh = tf.keep(hh.concat(hk))
                 }
             }
 
@@ -513,9 +515,10 @@
 
             x = gParam.head.weight.matMul(x)
             x = x.dataSync()
-
+            
+            var i_delta = ctx.length - c.length
             for (var i = 0; i < c.length; i++)
-                x[ctx[i]] += c[i]
+                x[ctx[i + i_delta]] += c[i]
 
             return x
         })
@@ -609,7 +612,7 @@
                     if (iter == ANALYZE_LENGTH - 1)
                         saveStat(out, ctxStr)
                 }
-                document.getElementById("loading").innerHTML = '正在分析内容 ' + Math.round(iter / ANALYZE_LENGTH * 100) + '%（这步待优化，以后会提速10倍）'
+                document.getElementById("loading").innerHTML = '正在分析内容 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）'
                 asyncAnalyze(iter + 1, callback);
             }, 0);
         } else {
