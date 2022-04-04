@@ -85,7 +85,7 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 80%;">
-        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 请用Chrome最快 电脑是智障，仅供娱乐，请遵守法律法规 <a href="https://t.me/ai_writer" target="_blank">TG群</a></p>
+        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 <a href="https://t.me/ai_writer" target="_blank">TG群</a> 请用Chrome写得最快 电脑是智障，仅供娱乐，请遵守法律法规</p>
     </div>
     <div id="textWrap">
         <div style="min-height:2em">
@@ -132,10 +132,21 @@
                     <option>罗马</option>
                     <option>魔法</option>
                     <option>少女</option>
+                    <option>魔女</option>
                     <option>“区区</option>
+                    <option>“道友</option>
+                    <option>“恭喜</option>
+                    <option>神圣</option>
+                    <option>极品</option>
+                    <option>传说</option>
+                    <option>远古</option>
+                    <option>上古</option>
+                    <option>灵脉</option>
+                    <option>灵气</option>
+                    <option>灵石</option>
                 </select>
             </div>
-            <div style="margin: 1em 0"><select onfocus="this.selectedIndex=-1;this.blur();" onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
+            <div style="margin: 1em 0"><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
                     <option>随机度0</option>
                     <option>随机度0.3</option>
                     <option>随机度0.5</option>
