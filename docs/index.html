@@ -90,8 +90,7 @@
                 style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">续写 (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
-                <select id="option_each_write"
-                    onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
+                <select onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
                     <option>每次写30</option>
                     <option selected>每次写50</option>
                     <option>每次写75</option>
@@ -107,10 +106,23 @@
             <textarea id="logArea" style="flex: 1 1 0">请在左边写作。右边这里是暂存区域，会纪录每次的续写内容，供你参考。请定期清空这里，以免拖慢速度。</textarea>
         </div>
     </div>
-    <div style="margin:0 auto; text-align:center;">
+    <div style="margin:0 auto 10em auto; text-align:center;">
         <div>如果喜欢，欢迎支持项目 😃（扫下面码）。欢迎分享、合作。欢迎看<a href="https://withablink.taobao.com/"
                 target="_blank">【我们淘宝店有优质的高显色护眼LED台灯】</a></div>
         <img src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
+        <div>请定期清空右边区域，以免拖慢速度。</div>
+        <div><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
+                <option>随机度0</option>
+                <option>随机度0.3</option>
+                <option>随机度0.5</option>
+                <option>随机度0.7</option>
+                <option selected>(默认)随机度0.75</option>
+                <option>随机度0.8</option>
+                <option>随机度0.85</option>
+                <option>随机度0.9</option>
+                <option>随机度0.95</option>
+                <option>随机度1</option>
+            </select> 随机度越高，内容越丰富，但也容易乱</div>
     </div>
 </body>
 <script>
@@ -123,7 +135,7 @@
     const vocab_size = 8849
 
     var WRITE_EACH_LENGTH = 50
-    var TOP_P = 0.7
+    var TOP_P = 0.75
 
     var weightName = [
         'emb.weight',
@@ -466,7 +478,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字...'
+            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -546,7 +558,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字...'
+            document.getElementById("loading").innerHTML = '正在续写...'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
