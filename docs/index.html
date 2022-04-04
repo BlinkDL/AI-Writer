@@ -355,6 +355,8 @@
                 document.getElementById("loadprog").innerHTML = Math.round(LOADED_PARAMS / N_PARAMS * 100) + '%'
                 if (LOADED_PARAMS == N_PARAMS) {
                     showBtn()
+                    if (IS_FIRST_RUN)
+                        sendText()
                 }
             }
         }
@@ -706,9 +708,14 @@
     var textArea = document.getElementById("textArea")
     var logArea = document.getElementById("logArea")
 
+    var IS_FIRST_RUN = false
+
     let txt_stored = localStorage.getItem('txt_stored');
-    if (txt_stored)
+    if (txt_stored) {
         textArea.value = txt_stored
+    } else {
+        IS_FIRST_RUN = true
+    }
 
     let log_stored = localStorage.getItem('log_stored');
     if (log_stored)
