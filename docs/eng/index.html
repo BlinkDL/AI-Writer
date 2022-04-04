@@ -12,7 +12,7 @@
             hm.src = "https://hm.baidu.com/hm.js?1e834a9b11dc71db3d0ae4cbb885253d";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
-        })();        
+        })();
     </script>
 </head>
 
@@ -91,16 +91,14 @@
             <div id="loading" style="color:blue; font-size: 100%;text-align: center;">
                 Loading... <span id="loadprog"></span>
             </div>
-            <div id="writeBtns"
-                style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
+            <div id="writeBtns" style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">Continue story (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">Alternative (alt+E)</button>
             </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
             <textarea id="textArea" style="flex: 2 1 0">In the</textarea>
-            <textarea id="logArea"
-                style="flex: 1 1 0">Write in the left textarea. Here is the log of all generation results.</textarea>
+            <textarea id="logArea" style="flex: 1 1 0">Write in the left textarea. Here is the log of all generation results.</textarea>
         </div>
     </div>
 </body>
@@ -424,9 +422,10 @@
             } else {
                 var hh = hhh.clone()
                 hhh.dispose()
-                hhh = tf.keep(hh.concat(hk))
-                if (hhh.shape[0] > ctx_len) {
-                    hhh = tf.keep(hh.slice(hh.shape[0] - ctx_len, -1))
+                if (hh.shape[0] >= ctx_len) {
+                    hhh = tf.keep(hh.slice(1, -1).concat(hk))
+                } else {
+                    hhh = tf.keep(hh.concat(hk))
                 }
             }
 
@@ -435,9 +434,10 @@
 
             x = gParam.head.weight.matMul(x)
             x = x.dataSync()
-
+            
+            var i_delta = ctx.length - c.length
             for (var i = 0; i < c.length; i++)
-                x[ctx[i]] += c[i]
+                x[ctx[i + i_delta]] += c[i]
 
             return x
         })
