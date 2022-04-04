@@ -59,6 +59,7 @@
     #logArea {
         font-size: 70%;
         background-color: #ddd;
+        line-height: 1;
     }
 
     #textWrap {
@@ -74,11 +75,10 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 75%;">
-        <p>AI人工智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175"
-                target="_blank">采用我的RWKV-v2-RNN语言模型，效率高于GPT。点击看我的知乎，了解原理</a>
-        </p>
-        <p>请经常备份内容。请用 Chrome 最快。这是简化的快速模型，在 <a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github
-                有更强版本</a>。电脑是智障，仅供娱乐，请遵守法律法规。</p>
+        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175"
+                target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效。点击看我的知乎，了解原理</a> 请经常备份内容 请用 Chrome 最快 这是简化快速模型，在 <a
+                href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github
+                有更强版本</a> 电脑是智障，仅供娱乐，请遵守法律法规</p>
     </div>
     <div id="textWrap">
         <div style="min-height:2em">
@@ -90,6 +90,16 @@
                 style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">续写 (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
+                <select id="option_each_write"
+                    onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
+                    <option>每次写30</option>
+                    <option selected>每次写50</option>
+                    <option>每次写75</option>
+                    <option>每次写100</option>
+                    <option>每次写200</option>
+                    <option>每次写300</option>
+                    <option>每次写500</option>
+                </select>
             </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
@@ -456,7 +466,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写...'
+            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字...'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -536,7 +546,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
-            document.getElementById("loading").innerHTML = '正在续写...'
+            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字...'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
             var context = ''
