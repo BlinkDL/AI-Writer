@@ -97,8 +97,8 @@
                 <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
                 <select onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
                     <option>每次写30</option>
-                    <option selected>每次写50</option>
-                    <option>每次写75</option>
+                    <option>每次写50</option>
+                    <option selected>每次写75</option>
                     <option>每次写100</option>
                     <option>每次写200</option>
                     <option>每次写300</option>
@@ -182,7 +182,7 @@
     const ctx_len = 768
     const vocab_size = 8849
 
-    var WRITE_EACH_LENGTH = 50
+    var WRITE_EACH_LENGTH = 75
     var TOP_P = 0.8
 
     var weightName = [
