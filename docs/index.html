@@ -122,7 +122,7 @@
                 <option>随机度0.9</option>
                 <option>随机度0.95</option>
                 <option>随机度1</option>
-            </select> 随机度越高，内容越丰富，但也容易乱</div>
+            </select> 随机度越高，内容丰富但也容易乱</div>
     </div>
 </body>
 <script>
@@ -523,6 +523,8 @@
                 asyncWriteOne(iter + 1);
             }, 0);
         } else {
+            localStorage.setItem('txt_stored', textArea.value);
+            localStorage.setItem('log_stored', logArea.value);
             showBtn()
         }
     }
@@ -640,9 +642,6 @@
 
         logArea.value += d
         logArea.scrollTop = logArea.scrollHeight;
-
-        localStorage.setItem('txt_stored', textArea.value);
-        localStorage.setItem('log_stored', logArea.value);
     }
 
     textArea.onchange = function (e) {
