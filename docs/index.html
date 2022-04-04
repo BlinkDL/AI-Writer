@@ -2,10 +2,7 @@
 <html>
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
     <script>
-        tf.setBackend('wasm');
         var _hmt = _hmt || [];
         (function () {
             var hm = document.createElement("script");
@@ -13,6 +10,11 @@
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
+    <script>
+        tf.setBackend('wasm');
     </script>
 </head>
 
@@ -530,7 +532,7 @@
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...' + '<button onmousedown="gWriteShallStop=true">【停止】</button>'
+            document.getElementById("loading").innerHTML = '正在写 ' + (iter + 1) + '/' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + ' <button onmousedown="gWriteShallStop=true">【停止】</button>'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -607,7 +609,7 @@
                     if (iter == ANALYZE_LENGTH - 1)
                         saveStat(out, ctxStr)
                 }
-                document.getElementById("loading").innerHTML = '正在分析内容 ' + Math.round(iter / ANALYZE_LENGTH * 100) + '% ...（尚未优化，以后会提速10倍）'
+                document.getElementById("loading").innerHTML = '正在分析内容 ' + Math.round(iter / ANALYZE_LENGTH * 100) + '%（这步待优化，以后会提速10倍）'
                 asyncAnalyze(iter + 1, callback);
             }, 0);
         } else {
