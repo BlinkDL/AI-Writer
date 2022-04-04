@@ -1,16 +1,16 @@
 # AI-Writer
 AI 写小说，支持 N/A/I卡 GPU 加速。采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM 。
 
-### 小白用户请用网页版（弱一些，但是手机点开就能用）：https://blinkdl.github.io/AI-Writer/
+**==>【小白用户请用网页版（弱一些，但是手机点开就能用）：https://blinkdl.github.io/AI-Writer/ 】<==**
 
-***另外请大家看，本页面的最后，我会解释模型的原理，不懂电脑也能懂。***
+**另外请大家看，本页面的最后，我会解释模型的原理，不懂电脑也能懂。**
 
 1. 先看下面的【安装方法】。下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录。
 2. 运行 python run.py（或双击run.bat），建议在cmd运行，看出错提示。有问题请看【安装方法】和【常见问题】。
 
-也支持纯 CPU 快速生成，每秒 1-10 个字，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。
+也支持 CPU exe 生成，下载请加：技术和用户 QQ 群 143626394（加入时请简单自我介绍）。还有用户TG群：https://t.me/ai_writer 。
 
-最新加入网页界面，执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
+网页界面：执行 python server.py（或双击server.bat）然后打开 web-client 中的 index.html（推荐用Chrome）。
 
 ![Screenshot](server.jpg)
 
