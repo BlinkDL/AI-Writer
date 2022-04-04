@@ -120,7 +120,7 @@
         <div style="line-height: 1.5;">
             <div>请定期清空右边区域，以免拖慢速度。如果字体小，可放大网页。</div>
             <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可训练自己的语料。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
-            <div style="margin: 1em 0">使用创意开头（会将左边内容移到右边）：<select id="set_prompt" onchange="setPrompt(this.options[this.selectedIndex].text)">
+            <div style="margin: 1em 0">使用创意开头 <select id="set_prompt" onchange="setPrompt(this.options[this.selectedIndex].text)">
                     <option>请选择</option>
                     <option>恐怖</option>
                     <option>绝美</option>
@@ -144,7 +144,7 @@
                     <option>灵脉</option>
                     <option>灵气</option>
                     <option>灵石</option>
-                </select>
+                </select>（会将左边内容移到右边）
             </div>
             <div style="margin: 1em 0"><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
                     <option>随机度0</option>
