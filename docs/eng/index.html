@@ -557,6 +557,9 @@
                 if (endsNewLine)
                     context = context + '\n'
             }
+            if (context.length > ctx_len) {
+                context = context.substr(context.length - ctx_len)
+            }            
             // console.log(context)
             ctx = Array.prototype.map.call(context, x => {
                 if (x in stoi)
