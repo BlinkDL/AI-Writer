@@ -124,6 +124,7 @@
                     <option>随机度0.95</option>
                     <option>随机度1</option>
                 </select> 随机度越高，内容丰富但逻辑变差。如果每次写很长，建议提高随机度，避免陷入重复。</div>
+            <div id="model_version"></div>
         </div>
         <div style="line-height: 2; text-align: left; margin:1em;">
             FAQ：
@@ -274,11 +275,15 @@
     var N_PARAMS = weightName.length
     var LOADED_PARAMS = 0
 
+    // var MODEL_NAME = 'js_model'
+    var MODEL_NAME = '20220404'
+    document.getElementById("model_version").innerHTML = '模型版本：' + MODEL_NAME
+
     var request = new XMLHttpRequest()
     var itos = {}
     var stoi = {}
     request.responseType = 'json';
-    request.open('GET', "js_model/word-utf8.json", true)
+    request.open('GET', MODEL_NAME + "/word-utf8.json", true)
     request.onload = function () {
         itos = request.response
         for (var key in itos) {
@@ -289,7 +294,7 @@
 
     function loadWeight(wName) {
         var request = new XMLHttpRequest()
-        request.open('GET', "js_model/" + wName + ".bin", true)
+        request.open('GET', MODEL_NAME + "/" + wName + ".bin", true)
         request.responseType = 'blob'
         request.onload = function () {
             var reader = new FileReader()
