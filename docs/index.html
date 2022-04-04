@@ -106,22 +106,36 @@
                     <option>每次写1000</option>
                     <option>每次写2000</option>
                     <option>每次写3000</option>
-                    <option>每次写5000</option>
                 </select>
             </div>
         </div>
         <div style="display:flex; flex-direction:row; justify-content:space-evenly;">
-            <textarea id="textArea" style="flex: 2 1 0">罗马</textarea>
+            <textarea id="textArea" style="flex: 2 1 0">黑暗</textarea>
             <textarea id="logArea" style="flex: 1 1 0">请在左边写作。右边这里是暂存区域，会纪录每次的续写内容，供你参考。请定期清空这里，以免拖慢速度。</textarea>
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div>如果喜欢，请支持项目 😃（扫下面码）。欢迎分享、合作。欢迎看<a href="https://withablink.taobao.com/" target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
-        <img src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
+        <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/" target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
+        <img style="max-width:50vw" src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
         <div style="line-height: 1.5;">
-            <div>请定期清空右边区域，以免拖慢速度。如果字体太小，可以放大网页。</div>
-            <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可以训练自己的语料。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
-            <div><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
+            <div>请定期清空右边区域，以免拖慢速度。如果字体小，可放大网页。</div>
+            <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可训练自己的语料。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
+            <div style="margin: 1em 0">使用创意开头（会将左边内容移到右边）：<select id="set_prompt" onchange="setPrompt(this.options[this.selectedIndex].text)">
+                    <option>请选择</option>
+                    <option>恐怖</option>
+                    <option>绝美</option>
+                    <option>黑暗</option>
+                    <option>雪白</option>
+                    <option>金色</option>
+                    <option>血红</option>
+                    <option>翠绿</option>
+                    <option>罗马</option>
+                    <option>魔法</option>
+                    <option>少女</option>
+                    <option>“区区</option>
+                </select>
+            </div>
+            <div style="margin: 1em 0"><select onfocus="this.selectedIndex=-1;this.blur();" onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
                     <option>随机度0</option>
                     <option>随机度0.3</option>
                     <option>随机度0.5</option>
@@ -132,14 +146,14 @@
                     <option>随机度0.9</option>
                     <option>随机度0.95</option>
                     <option>随机度1</option>
-                </select> 随机度越高，内容丰富但逻辑变差。如果每次写很长，建议提高随机度，避免陷入重复。</div>
+                </select> 随机度越高，内容越丰富但逻辑变差。如果续写很多字，可提高随机度，避免重复。</div>
             <div id="model_version"></div>
         </div>
         <div style="line-height: 2; text-align: left; margin:1em;">
             FAQ：
-            <br>*) 是用什么训练？答：用pytorch训练，用tf.js部署。用了200G语料，80%是网文。这里是6层512嵌入的迷你模型（电脑比较笨，但写得快）。在Github有12层768嵌入的标准模型，效果更好。
+            <br>*) 是用什么训练？答：用pytorch训练，用tf.js部署。用了200G语料，80%是网文。这里是6层512嵌入的迷你模型（所以电脑笨，但写得快）。在Github有12层768嵌入的标准模型，效果更好。
             <br>*) 欢迎大家支持项目，以炼更大的效果更好的模型（得炼几个月）。
-            <br>*) 可以写刘备吗？答：可以用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。
+            <br>*) 可以写刘备吗？答：可用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。
             <div style="line-height: 1.5;">
                 <br>模型原理（以Github的12层768嵌入模型为例）
                 <br>电脑的原理，是题海战术+笨鸟先飞。它把字变成很多数，然后，找这些数的数学（统计学）规律。
@@ -348,13 +362,15 @@
     }
 
     function hideBtn() {
-        document.getElementById("loading").style.display = "block";
-        document.getElementById("writeBtns").style.display = "none";
+        document.getElementById("loading").style.display = "block"
+        document.getElementById("writeBtns").style.display = "none"
+        document.getElementById("set_prompt").disabled = true
     }
 
     function showBtn() {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("writeBtns").style.display = "flex";
+        document.getElementById("loading").style.display = "none"
+        document.getElementById("writeBtns").style.display = "flex"
+        document.getElementById("set_prompt").disabled = false
     }
 
     var ln_eps = null
@@ -514,7 +530,7 @@
 
             x = gParam.head.weight.matMul(x)
             x = x.dataSync()
-            
+
             var i_delta = ctx.length - c.length
             for (var i = 0; i < c.length; i++)
                 x[ctx[i + i_delta]] += c[i]
@@ -743,6 +759,17 @@
             txt = txt.substr(0, lastGeneratePosition)
             document.getElementById("textArea").value = txt
         }
+        sendText()
+    }
+
+    function setPrompt(pp) {
+        if (pp.includes('选择'))
+            return
+        document.getElementById("set_prompt").selectedIndex = 0
+        logArea.value += '\n\n' + textArea.value
+        logArea.scrollTop = logArea.scrollHeight
+        textArea.value = pp
+        window.scrollTo(0, 0)
         sendText()
     }
 
