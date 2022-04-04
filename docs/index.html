@@ -497,7 +497,6 @@
             x = x.expandDims(1)
             var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
 
-            var i_begin = 0
             if (hhh === null) {
                 hhh = tf.keep(hk)
             } else {
@@ -612,7 +611,7 @@
                     if (iter == ANALYZE_LENGTH - 1)
                         saveStat(out, ctxStr)
                 }
-                document.getElementById("loading").innerHTML = '正在分析内容 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）'
+                document.getElementById("loading").innerHTML = '正在分析最后 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）'
                 asyncAnalyze(iter + 1, callback);
             }, 0);
         } else {
@@ -648,6 +647,9 @@
                 }
                 if (endsNewLine)
                     context = context + '\n'
+            }
+            if (context.length > ctx_len) {
+                context = context.substr(context.length - ctx_len)
             }
             // console.log(context)
             ctx = Array.prototype.map.call(context, x => {
