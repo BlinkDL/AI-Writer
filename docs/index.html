@@ -115,6 +115,8 @@
                 target="_blank">【我们淘宝店有优质的高显色护眼LED台灯】</a></div>
         <img src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
         <div>请定期清空右边区域，以免拖慢速度。如果字体太小，可以放大网页。</div>
+        <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a
+                href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可以训练自己的语料</div>
         <div><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
                 <option>随机度0</option>
                 <option>随机度0.3</option>
@@ -479,10 +481,11 @@
     var ctx = [1]
     var ctxBuf = {}
     var ctxNow = ''
+    var gWriteShallStop = false
 
     function asyncWriteOne(iter = 0) {
         if (iter < WRITE_EACH_LENGTH) {
-            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...'
+            document.getElementById("loading").innerHTML = '正在续写 ' + WRITE_EACH_LENGTH + ' 字，随机度 ' + TOP_P + '...' + '<button onmousedown="gWriteShallStop=true">停止</button>'
             setTimeout(() => {
 
                 var ctxStr = ''
@@ -495,7 +498,7 @@
                     out = loadStat(ctxStr)
                 } else {
                     out = run(ctx)
-                    if (iter == WRITE_EACH_LENGTH - 1)
+                    if ((iter == WRITE_EACH_LENGTH - 1) || (gWriteShallStop))
                         saveStat(out, ctxStr)
                 }
 
@@ -524,7 +527,13 @@
                 addText(itos[result])
                 ctx.push(result)
 
-                asyncWriteOne(iter + 1);
+                if (!gWriteShallStop)
+                    asyncWriteOne(iter + 1);
+                else {
+                    localStorage.setItem('txt_stored', textArea.value);
+                    localStorage.setItem('log_stored', logArea.value);
+                    showBtn()
+                }
             }, 0);
         } else {
             localStorage.setItem('txt_stored', textArea.value);
@@ -564,6 +573,7 @@
         if (LOADED_PARAMS == N_PARAMS) {
             clearStat()
             hideBtn()
+            gWriteShallStop = false
             document.getElementById("loading").innerHTML = '正在续写...'
             var logArea = document.getElementById("logArea")
             logArea.value += '\n\n'
