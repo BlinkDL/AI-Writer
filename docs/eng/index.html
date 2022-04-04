@@ -447,7 +447,7 @@
         return x
     }
 
-    var WRITE_EACH_LENGTH = 128
+    var WRITE_EACH_LENGTH = 256
     var ctx = [1]
     var ctxBuf = {}
     var ctxNow = ''
@@ -479,7 +479,7 @@
                     out[i] = Math.exp(out[i])
                     sum_exp += out[i]
                 }
-                var ran = Math.random() * 0.7
+                var ran = Math.random() * 0.8
                 var i = 0
                 while (true) {
                     // console.log(ran, i, out[indexed[i]] / sum_exp)
@@ -541,21 +541,22 @@
             if (rawCtx == '') {
                 context = '\n'
             } else {
-                var endsNewLine = false
-                var rr = rawCtx.split('\n')
-                if (rr[rr.length - 1].trim() == '')
-                    endsNewLine = true
+                // var endsNewLine = false
+                // var rr = rawCtx.split('\n')
+                // if (rr[rr.length - 1].trim() == '')
+                //     endsNewLine = true
 
-                rawCtx = rawCtx.trim()
-                rawCtx = rawCtx.replaceAll('\r\n', '\n').replaceAll('　', ' ')
-                rawCtx = rawCtx.split('\n')
-                for (var i = 0; i < rawCtx.length; i++) {
-                    var ss = rawCtx[i].trim()
-                    if (ss.length > 0)
-                        context += '\n' + ss
-                }
-                if (endsNewLine)
-                    context = context + '\n'
+                // rawCtx = rawCtx.trim()
+                // rawCtx = rawCtx.replaceAll('\r\n', '\n').replaceAll('　', ' ')
+                // rawCtx = rawCtx.split('\n')
+                // for (var i = 0; i < rawCtx.length; i++) {
+                //     var ss = rawCtx[i].trim()
+                //     if (ss.length > 0)
+                //         context += '\n' + ss
+                // }
+                // if (endsNewLine)
+                //     context = context + '\n'
+                context = '\n' + rawCtx
             }
             if (context.length > ctx_len) {
                 context = context.substr(context.length - ctx_len)
