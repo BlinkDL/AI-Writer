@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>AI人工智障写作</title>
+    <title>AI智障写作</title>
 </head>
 <style>
     * {
@@ -85,7 +85,7 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 80%;">
-        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 <a href="https://t.me/ai_writer" target="_blank">TG群</a> 请用Chrome写得最快 电脑是智障，仅供娱乐，请遵守法律法规</p>
+        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 <a href="https://t.me/ai_writer" target="_blank">TG群</a> 请用Chrome写得最快 <span style="color:blue; font-weight: bold;">电脑是智障，仅供娱乐，请遵守法律法规</span></p>
     </div>
     <div id="textWrap">
         <div style="min-height:2em">
@@ -170,6 +170,7 @@
             <br>*) 是用什么训练？答：用pytorch训练，用tf.js部署。用了200G语料，80%是网文。这里是6层512嵌入的迷你模型（所以电脑笨，但写得快）。在Github有12层768嵌入的标准模型，效果更好。
             <br>*) 欢迎大家支持项目，以炼更大的效果更好的模型（得炼几个月）。
             <br>*) 可以写刘备吗？答：可用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。
+            <br>*) 为什么有时会冒出来“第xx章”？答：因为训练文本没去除章节标记，但它生成的xx章都是瞎编的，你找不到出处的。
             <div style="line-height: 1.5;">
                 <br>模型原理（以Github的12层768嵌入模型为例）
                 <br>电脑的原理，是题海战术+笨鸟先飞。它把字变成很多数，然后，找这些数的数学（统计学）规律。
