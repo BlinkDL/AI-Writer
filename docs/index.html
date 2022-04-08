@@ -122,7 +122,7 @@
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div><span id="model_version"></span> 代码版本 20220408，解决了重复。注意写很长仍会逐渐变差</div>
+        <div><span id="model_version"></span> 代码 20220408，解决了重复。注意写很长仍会逐渐变差</div>
         <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/"
                 target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
         <img style="max-width:50vw" src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
@@ -342,7 +342,7 @@
 
     // var MODEL_NAME = 'js_model'
     var MODEL_NAME = '20220406'
-    document.getElementById("model_version").innerHTML = '模型版本 ' + MODEL_NAME
+    document.getElementById("model_version").innerHTML = '模型 ' + MODEL_NAME
 
     var request = new XMLHttpRequest()
     var itos = {}
@@ -497,6 +497,7 @@
     }
 
     function saveStat(out, name) {
+        name = name.slice(-ctx_len)
         ctxBuf[name] = {}
         var buf = ctxBuf[name]
         buf.out = out.slice()
@@ -516,6 +517,7 @@
     }
 
     function loadStat(name) {
+        name = name.slice(-ctx_len)
         var buf = ctxBuf[name]
         for (var x in buf.xxx) {
             xxx[x] = buf.xxx[x].clone()
@@ -673,7 +675,7 @@
     var ANALYZE_LENGTH = 0
 
     function asyncAnalyze(iter = 1, callback) {
-        if (iter < ANALYZE_LENGTH) {
+        if ((iter < ANALYZE_LENGTH) && (!gWriteShallStop)) {
             setTimeout(() => {
                 var ccc = ctx.slice(0, iter)
 
@@ -690,7 +692,7 @@
                     if (iter == ANALYZE_LENGTH - 1)
                         saveStat(out, ctxStr)
                 }
-                document.getElementById("loading").innerHTML = '正在分析最后 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）'
+                document.getElementById("loading").innerHTML = '正在分析最后 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）' + ' <button onmousedown="gWriteShallStop=true">【停止】</button>'
                 asyncAnalyze(iter + 1, callback);
             }, 0);
         } else {
@@ -727,9 +729,8 @@
                 if (endsNewLine)
                     context = context + '\n'
             }
-            if (context.length > ctx_len) {
-                context = context.substr(context.length - ctx_len)
-            }
+            var context_shifted = context.slice(-ctx_len-1, -1)
+            context = context.slice(-ctx_len)
             // console.log(context)
             ctx = Array.prototype.map.call(context, x => {
                 if (x in stoi)
@@ -747,14 +748,14 @@
                 return
             }
 
-            var ctxStr = ''
-            for (var s of ctx)
-                ctxStr += itos[s]
-            if (ctxStr in ctxBuf) {
-                // console.log('find', ctxStr)
-                loadStat(ctxStr)
+            // console.log(context, context_shifted, JSON.stringify(Object.keys(ctxBuf)))
+            if (context.slice(-ctx_len) in ctxBuf) {
+                // console.log('find', context)
+                loadStat(context)
                 asyncWriteOne()
-            } else if (ctxStr.slice(0, -1) in ctxBuf) {
+            } else if (context_shifted in ctxBuf) {
+                // console.log('findX', context_shifted)
+                loadStat(context_shifted)
                 ANALYZE_LENGTH = ctx.length
                 asyncAnalyze(ctx.length - 1, asyncWriteOne)
             } else {
