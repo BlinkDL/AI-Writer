@@ -85,14 +85,19 @@
 
 <body>
     <div style="text-align: center; line-height: 1.5; font-size: 80%;">
-        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a> 这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 <a href="https://t.me/ai_writer" target="_blank">TG群</a> 请用Chrome写得最快 <span style="color:blue; font-weight: bold;">电脑是智障，仅供娱乐，请遵守法律法规</span></p>
+        <p>AI智障写作 <a href="https://zhuanlan.zhihu.com/p/487278175" target="_blank">采用我的RWKV-v2-RNN模型，比GPT高效，点击看我知乎了解</a>
+            这是简化版，<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github版更强</a> 请经常备份内容 <a
+                href="https://t.me/ai_writer" target="_blank">TG群</a> 请用Chrome写得最快 <span
+                style="color:blue; font-weight: bold;">电脑是智障，仅供娱乐，请遵守法律法规</span></p>
     </div>
     <div id="textWrap">
         <div style="min-height:2em">
             <div id="loading" style="color:blue; font-size: 120%; text-align: center;">
-                正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer" target="_blank">Github 外网</a>，请找方法加速。读取完就会有续写按钮。
+                正在读取模型 <span id="loadprog"></span>，模型在 <a href="https://github.com/BlinkDL/AI-Writer"
+                    target="_blank">Github 外网</a>，请找方法加速。读取完就会有续写按钮。
             </div>
-            <div id="writeBtns" style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
+            <div id="writeBtns"
+                style="width: 100%; display: none; margin-bottom:0.5em; flex-direction:row; justify-content:space-evenly;">
                 <button class="writeBtn" onclick="sendText()">续写 (alt+Q)</button>
                 <button class="writeBtn" onclick="rewriteText()">换个写法 (alt+E)</button>
                 <select onchange="WRITE_EACH_LENGTH = parseInt(this.options[this.selectedIndex].text.split('写')[1])">
@@ -106,6 +111,8 @@
                     <option>每次写1000</option>
                     <option>每次写2000</option>
                     <option>每次写3000</option>
+                    <option>每次写5000</option>
+                    <option>每次写999999</option>
                 </select>
             </div>
         </div>
@@ -115,11 +122,14 @@
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/" target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
+        <div><span id="model_version"></span> 代码版本 20220408，减少了写很长时的重复</div>
+        <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/"
+                target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
         <img style="max-width:50vw" src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
         <div style="line-height: 1.5;">
             <div>请定期清空右边区域，以免拖慢速度。如果字体小，可放大网页。</div>
-            <div style="margin: 1em 0">使用创意开头：<select id="set_prompt" onchange="setPrompt(this.options[this.selectedIndex].text)">
+            <div style="margin: 1em 0">使用创意开头：<select id="set_prompt"
+                    onchange="setPrompt(this.options[this.selectedIndex].text)">
                     <option>请选择</option>
                     <option>恐怖</option>
                     <option>绝美</option>
@@ -161,7 +171,8 @@
                     <option>魔力</option>
                 </select> 会将左边内容移到右边！
             </div>
-            <div style="margin: 1em 0"><select onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
+            <div style="margin: 1em 0"><select
+                    onchange="TOP_P = parseFloat(this.options[this.selectedIndex].text.split('度')[1])">
                     <option>随机度0</option>
                     <option>随机度0.3</option>
                     <option>随机度0.5</option>
@@ -173,16 +184,19 @@
                     <option>随机度0.95</option>
                     <option>随机度1</option>
                 </select> 随机度越高，内容越丰富但逻辑变差。如果续写很多字，可提高随机度，避免重复。</div>
-            <div id="model_version"></div>
-            <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可训练自己的语料。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
+            <div>在Github有<a href="https://github.com/BlinkDL/AI-Writer" target="_blank">更强的模型</a>，以及<a
+                    href="https://github.com/BlinkDL/RWKV-LM" target="_blank">训练代码</a>，可训练自己的语料。不懂可以加<a
+                    href="https://t.me/ai_writer" target="_blank">TG群</a>。</div>
         </div>
         <div style="line-height: 2; text-align: left; margin:1em;">
             FAQ：
             <br>*) 是用什么训练？答：用pytorch训练，用tf.js部署。用了200G语料，80%是网文。这里是6层512嵌入的迷你模型（所以电脑笨，但写得快）。在Github有12层768嵌入的标准模型，效果更好。
             <br>*) 欢迎大家支持项目，以炼更大的效果更好的模型（得炼几个月）。
-            <br>*) 可以写刘备吗？答：可用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer" target="_blank">TG群</a>。现在你能诱导它写擦边球（有时它自己也会写），不过，训练内容没H文，所以它不会开露骨的车。
+            <br>*) 可以写刘备吗？答：可用Github代码自己训练。不懂可以加<a href="https://t.me/ai_writer"
+                target="_blank">TG群</a>。现在你能诱导它写擦边球（有时它自己也会写），不过，训练内容没H文，所以它不会开露骨的车。
             <br>*) 为什么有时会冒出来“第xx章”？答：因为训练文本没去除章节标记，但它生成的xx章都是瞎编的，你找不到出处的。
-            <br>*) 为什么写长了容易突发恶疾？答：因为这是6层512嵌入的迷你26M参数模型。在Github有12层768嵌入的标准模型，效果更好。小梦模型比这个大几百倍。模型越大，逻辑越好，训练耗资越高，所以请大家支持项目，这样我可以炼大模型。遇到重复可以【换个写法】，或删除重复的内容再续写。
+            <br>*)
+            为什么写长了容易重复？答：因为这是6层512嵌入的迷你26M参数模型。在Github有12层768嵌入的标准模型，效果更好。小梦模型比这个大几百倍。模型越大，逻辑越好，训练耗资越高，所以请大家支持项目，这样我可以炼大模型。遇到重复可以【换个写法】，或删除重复的内容再续写。
             <div style="line-height: 1.5;">
                 <br>模型原理（以Github的12层768嵌入模型为例）
                 <br>电脑的原理，是题海战术+笨鸟先飞。它把字变成很多数，然后，找这些数的数学（统计学）规律。
@@ -328,7 +342,7 @@
 
     // var MODEL_NAME = 'js_model'
     var MODEL_NAME = '20220406'
-    document.getElementById("model_version").innerHTML = '模型版本：' + MODEL_NAME
+    document.getElementById("model_version").innerHTML = '模型版本 ' + MODEL_NAME
 
     var request = new XMLHttpRequest()
     var itos = {}
@@ -597,6 +611,25 @@
                         saveStat(out, ctxStr)
                 }
 
+                var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+                var count = {}
+                var extra = {}
+                for (var j = ctx.length - 1; j >= 0; j--) {
+                    var dist = ctx.length - j
+                    var cj = ctx[j]
+                    var cc = itos[cj]
+                    if (cj in count)
+                        count[cj] += 1
+                    else {
+                        count[cj] = 1
+                        extra[cj] = 0
+                    }
+                    extra[cj] += Math.max(0, count[cj] - 1 - dist * (reg.test(cc) ? 0.01 : 0.05))
+                }
+                for (var j in extra) {
+                    out[j] -= Math.pow(extra[j], 1)
+                }
+
                 var indexed = Array.from(Array(out.length).keys()).sort((a, b) => out[a] > out[b] ? -1 : (out[b] > out[a]) | 0)
 
                 // var result = indexed[0]
@@ -606,6 +639,7 @@
                     out[i] = Math.exp(out[i])
                     sum_exp += out[i]
                 }
+
                 var ran = Math.random() * TOP_P
                 var i = 0
                 while (true) {
@@ -617,7 +651,6 @@
                         break
                 }
                 var result = indexed[i]
-
 
                 addText(itos[result])
                 ctx.push(result)
