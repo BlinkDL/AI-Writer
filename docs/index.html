@@ -341,7 +341,7 @@
     var LOADED_PARAMS = 0
 
     // var MODEL_NAME = 'js_model'
-    var MODEL_NAME = '20220406'
+    var MODEL_NAME = '20220408'
     document.getElementById("model_version").innerHTML = '模型 ' + MODEL_NAME
 
     var request = new XMLHttpRequest()
@@ -535,6 +535,7 @@
 
     function run(ctx) {
         var x = tf.tidy(() => {
+            ctx = ctx.slice(-ctx_len)
             var ctxStr = ''
             for (var s of ctx)
                 ctxStr += itos[s]
@@ -558,7 +559,7 @@
 
             x = x.expandDims(1)
             var hk = gParam.head_k.weight.matMul(x).squeeze().expandDims(0)
-
+            // console.log(itos[ctx[ctx.length - 1]], hk.dataSync()[0])
             if (hhh === null) {
                 hhh = tf.keep(hk)
             } else {
@@ -577,9 +578,11 @@
             x = gParam.head.weight.matMul(x)
             x = x.dataSync()
 
-            var i_delta = ctx.length - c.length
-            for (var i = 0; i < c.length; i++)
-                x[ctx[i + i_delta]] += c[i]
+            // console.log(ctxNow, ctx.length, c.length)
+            for (var i = 0; i < ctx.length; i++) {
+                x[ctx[i]] += c[i]
+                // console.log(i, itos[ctx[i]], hhh.slice(i, 1).dataSync()[0])
+            }
 
             return x
         })
@@ -689,8 +692,8 @@
                 } else {
                     // console.log('ANALYZE', ctxStr)
                     var out = run(ccc)
-                    if (iter == ANALYZE_LENGTH - 1)
-                        saveStat(out, ctxStr)
+                    // if (iter == ANALYZE_LENGTH - 1)
+                    //     saveStat(out, ctxStr)
                 }
                 document.getElementById("loading").innerHTML = '正在分析最后 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）' + ' <button onmousedown="gWriteShallStop=true">【停止】</button>'
                 asyncAnalyze(iter + 1, callback);
@@ -729,7 +732,7 @@
                 if (endsNewLine)
                     context = context + '\n'
             }
-            var context_shifted = context.slice(-ctx_len-1, -1)
+            var context_shifted = context.slice(-ctx_len - 1, -1)
             context = context.slice(-ctx_len)
             // console.log(context)
             ctx = Array.prototype.map.call(context, x => {
@@ -754,10 +757,9 @@
                 loadStat(context)
                 asyncWriteOne()
             } else if (context_shifted in ctxBuf) {
-                // console.log('findX', context_shifted)
+                // console.log('find-shifted', context_shifted, 'ctx', context, ctx)
                 loadStat(context_shifted)
-                ANALYZE_LENGTH = ctx.length
-                asyncAnalyze(ctx.length - 1, asyncWriteOne)
+                asyncWriteOne()
             } else {
                 ANALYZE_LENGTH = ctx.length
                 asyncAnalyze(1, asyncWriteOne)
