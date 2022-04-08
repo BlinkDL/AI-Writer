@@ -112,7 +112,7 @@
                     <option>每次写2000</option>
                     <option>每次写3000</option>
                     <option>每次写5000</option>
-                    <option>每次写999999</option>
+                    <option>每次写9999</option>
                 </select>
             </div>
         </div>
@@ -122,7 +122,7 @@
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div><span id="model_version"></span> 代码版本 20220408，减少了写很长时的重复</div>
+        <div><span id="model_version"></span> 代码版本 20220408，解决了重复。注意写很长仍会逐渐变差</div>
         <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/"
                 target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
         <img style="max-width:50vw" src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
@@ -196,7 +196,7 @@
                 target="_blank">TG群</a>。现在你能诱导它写擦边球（有时它自己也会写），不过，训练内容没H文，所以它不会开露骨的车。
             <br>*) 为什么有时会冒出来“第xx章”？答：因为训练文本没去除章节标记，但它生成的xx章都是瞎编的，你找不到出处的。
             <br>*)
-            为什么写长了容易重复？答：因为这是6层512嵌入的迷你26M参数模型。在Github有12层768嵌入的标准模型，效果更好。小梦模型比这个大几百倍。模型越大，逻辑越好，训练耗资越高，所以请大家支持项目，这样我可以炼大模型。遇到重复可以【换个写法】，或删除重复的内容再续写。
+            为什么写长了容易变差？答：因为这是6层512嵌入的迷你26M参数模型。在Github有12层768嵌入的标准模型，效果更好。小梦模型比这个大几百倍。模型越大，逻辑越好，训练耗资越高，所以请大家支持项目，这样我可以炼大模型。建议每次只写几百字，遇到错误【换个写法】，或删除错误的内容再续写。
             <div style="line-height: 1.5;">
                 <br>模型原理（以Github的12层768嵌入模型为例）
                 <br>电脑的原理，是题海战术+笨鸟先飞。它把字变成很多数，然后，找这些数的数学（统计学）规律。
