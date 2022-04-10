@@ -692,8 +692,8 @@
                 } else {
                     // console.log('ANALYZE', ctxStr)
                     var out = run(ccc)
-                    // if (iter == ANALYZE_LENGTH - 1)
-                    //     saveStat(out, ctxStr)
+                    if (iter == ANALYZE_LENGTH - 1)
+                        saveStat(out, ctxStr)
                 }
                 document.getElementById("loading").innerHTML = '正在分析最后 ' + iter + '/' + ANALYZE_LENGTH + ' 字（这步待优化，以后会提速10倍）' + ' <button onmousedown="gWriteShallStop=true">【停止】</button>'
                 asyncAnalyze(iter + 1, callback);
