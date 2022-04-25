@@ -122,7 +122,7 @@
         </div>
     </div>
     <div style="margin:0 auto 10em auto; text-align:center;">
-        <div><span id="model_version"></span> 代码 20220408，解决了重复。注意写长仍会越写越差</div>
+        <div><span id="model_version"></span> 代码 20220410，解决了重复。注意写长仍会越写越差</div>
         <div>如果喜欢，请支持项目😃（扫下面码）欢迎分享、合作。请看<a href="https://withablink.taobao.com/"
                 target="_blank">【我们淘宝店】</a>有优质高显色护眼LED灯</div>
         <img style="max-width:50vw" src="https://mapp.alicdn.com/1648992731802nKnFWrIV085In7P.png">
@@ -341,7 +341,7 @@
     var LOADED_PARAMS = 0
 
     // var MODEL_NAME = 'js_model'
-    var MODEL_NAME = '20220408'
+    var MODEL_NAME = '20220425'
     document.getElementById("model_version").innerHTML = '模型 ' + MODEL_NAME
 
     var request = new XMLHttpRequest()
@@ -531,6 +531,10 @@
         hhh = buf.hhh.clone()
         ctxNow = name
         return buf.out.slice()
+    }
+
+    function addStat(ctx) {
+
     }
 
     function run(ctx) {
