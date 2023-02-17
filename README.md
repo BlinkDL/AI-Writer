@@ -5,7 +5,7 @@ N卡模型：https://github.com/BlinkDL/AI-Writer/releases/tag/v2022-02-15
 
 A/I卡模型：https://github.com/BlinkDL/AI-Writer/releases/tag/v2022-02-15-A
 
-### 最新项目：ChatRWKV https://github.com/BlinkDL/ChatRWKV 模拟 ChatGPT！模型开源！
+### 最新项目：ChatRWKV https://github.com/BlinkDL/ChatRWKV 有更强的开源网文大模型。这里的模型小很多。
 
 **小白用户请看网页版： https://blinkdl.github.io/AI-Writer/ （弱很多，但手机点开就能写）**
 
