@@ -2,6 +2,8 @@
 
 # 最新项目：RWKV-Runner https://github.com/josStorer/RWKV-Runner 有更强的 1.5B/3B/7B 开源网文大模型。
 
+# 最新网页在线版：https://modelscope.cn/studios/BlinkDL/RWKV-CHN/summary
+
 # 下面都是过时的信息！过时的模型！仅供参考！
 
 ===
@@ -13,7 +15,7 @@ N卡模型：https://github.com/BlinkDL/AI-Writer/releases/tag/v2022-02-15
 
 A/I卡模型：https://github.com/BlinkDL/AI-Writer/releases/tag/v2022-02-15-A
 
-**小白用户请看网页版： https://blinkdl.github.io/AI-Writer/ （弱很多，但手机点开就能写）**
+小白用户请看网页版： https://blinkdl.github.io/AI-Writer/ （弱很多，但手机点开就能写）
 
 Python版安装方法：
 1. 先看下面的【安装方法】。下载模型，在右边 Release（或者看QQ群文件），解压到 model 目录。
