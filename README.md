@@ -1,6 +1,10 @@
-# 最新项目：ChatRWKV https://github.com/BlinkDL/ChatRWKV 有更强的 1.5B/3B/7B 开源网文大模型。
-# 最新教程：https://zhuanlan.zhihu.com/p/609154637
+===
+
+# 最新项目：RWKV-Runner https://github.com/josStorer/RWKV-Runner 有更强的 1.5B/3B/7B 开源网文大模型。
+
 # 下面都是过时的信息！过时的模型！仅供参考！
+
+===
 
 # AI-Writer
 AI 写小说，支持 N/A/I卡 GPU 加速。采用我的 RWKV 模型，比 GPT 更快，训练代码：https://github.com/BlinkDL/RWKV-LM 。
