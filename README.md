@@ -74,10 +74,6 @@ https://zhuanlan.zhihu.com/p/435972716
 3. 如果用 server.py，也同样修改。
 ```
 
-如果觉得好用，欢迎支持项目：
-
-![Screenshot](alipay.png)
-
 新玄幻模型效果：
 
 ![Screenshot](AI-Writer.jpg)
